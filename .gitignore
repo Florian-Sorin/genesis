@@ -1,0 +1,73 @@
+# Dépendances
+node_modules/
+.pnpm-store/
+.yarn/
+vendor/
+.dart_tool/
+
+# Build
+dist/
+build/
+out/
+.next/
+.nuxt/
+.output/
+.vercel/
+.turbo/
+*.tsbuildinfo
+
+# Environnement & secrets
+.env
+.env.local
+.env.*.local
+.env.development
+.env.production
+!.env.example
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+logs/
+
+# Couverture & tests
+coverage/
+.nyc_output/
+test-results/
+playwright-report/
+playwright/.cache/
+
+# Caches outils
+.cache/
+.parcel-cache/
+.eslintcache
+.stylelintcache
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Éditeurs
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+*.swp
+*.swo
+
+# IA / agents (cache et historique locaux)
+.aider*
+.cursor/cache/
+.claude/cache/
+.claude/history/
+
+# Supabase local
+.supabase/
+
+# Divers
+*.local
+tmp/
+temp/
