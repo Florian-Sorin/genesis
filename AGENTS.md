@@ -17,6 +17,18 @@ Développeur solo, side project. Prioriser la simplicité et la maintenabilité.
 
 ---
 
+## Démarrer un nouveau projet
+
+Si le repo est encore au stade template (BRIEF.md contient `[NOM DU PROJET]`, pas de story réelle), **ne pas commencer à coder**. Suivre le workflow d'initialisation décrit dans `docs/KICKOFF.md` :
+
+1. **Phase 1** — Pitch brut → `BRIEF.md`
+2. **Phase 2** — Interview structurée → `FUNCTIONAL.md` + `ARCHITECTURE.md` + `SECURITY.md`
+3. **Phase 3** — Itération par module → `WIREFRAMES.md` + stories du module
+
+Commande dédiée : `/init`. Chaque phase a un **gate de validation** (checklist auto + résumé pour validation explicite du dev). Pas de phase suivante sans gate validé.
+
+---
+
 ## Ordre de lecture obligatoire
 
 > Avant toute implémentation, lire dans l'ordre :
@@ -54,8 +66,13 @@ Une story ne peut passer en `[wip]` que si **tous** ces critères sont vrais :
 - [ ] Au moins une tâche technique listée
 - [ ] Au moins un critère de done listé
 - [ ] Toutes les dépendances `Dépend de :` sont `[done]`
-- [ ] Si la story référence des écrans, ces écrans existent dans `WIREFRAMES.md` (au moins en description)
-- [ ] Si la story touche à la sécurité (auth, données utilisateur, paiement), `SECURITY.md` a été lu
+- [ ] Le module fonctionnel concerné est entièrement spécifié dans `FUNCTIONAL.md`
+- [ ] Si la story référence des écrans, ces écrans existent dans `WIREFRAMES.md` (a minima Route + Contenu + Actions + Lien externe ou prompt)
+- [ ] **Check wireframe au démarrage** : le dev a relu les wireframes des écrans concernés et explicitement choisi entre :
+  - ✅ **OK tel quel** → on code
+  - ✏️ **Ajustement mineur** → patch `WIREFRAMES.md`, commit dédié `[ST-XXX] adjust wireframes for [écran]`, on code
+  - 🔄 **Changement structurel** → stop, remonter à `FUNCTIONAL.md` (cf. `docs/KICKOFF.md` section "Gestion des changements en cours")
+- [ ] Si la story touche à la sécurité (auth, données utilisateur, paiement), `SECURITY.md` a été lu et la section "Impact sécurité" de la story est remplie
 
 Si un critère n'est pas rempli : **ne pas démarrer**, signaler ce qui manque et s'arrêter.
 
@@ -194,6 +211,7 @@ En cas de doute sur un pattern, choisir la solution la plus lisible et la plus p
 <!-- Commandes personnalisées dans .claude/commands/. -->
 <!-- Pour Cursor, ces actions peuvent être déclenchées en demandant à l'agent directement. -->
 
+- `/init`       — orchestre le workflow d'initialisation d'un nouveau projet (cf. `docs/KICKOFF.md`)
 - `/story`      — affiche la story `[wip]` ou `[todo]` suivante avec son contexte complet
 - `/ready`      — vérifie la Definition of Ready pour la prochaine story `[todo]`
 - `/done`       — vérifie la Definition of Done et marque la story `[wip]` comme `[done]`
@@ -209,6 +227,7 @@ En cas de doute sur un pattern, choisir la solution la plus lisible et la plus p
 
 - `node scripts/new-story.mjs` — création interactive d'une story (ID auto, fichier + index).
 - `node scripts/archive-stories.mjs` — déplace les stories `[done]` vers `docs/stories/done/`.
+- `node scripts/archive-mockups.mjs` — archive les pré-maquettes `src/playground/` vers `docs/assets/playground-archive/` (à lancer en fin de MVP).
 
 **L'agent peut utiliser ces scripts** au lieu de manipuler les fichiers à la main. C'est plus sûr et reproductible.
 
@@ -228,12 +247,15 @@ En cas de doute sur un pattern, choisir la solution la plus lisible et la plus p
 │   ├── ARCHITECTURE.md
 │   ├── SECURITY.md
 │   ├── WIREFRAMES.md
+│   ├── KICKOFF.md      → workflow d'initialisation projet (utilisé par /init)
 │   ├── STORIES.md      → index du backlog
 │   ├── stories/        → un fichier par story
 │   │   └── done/       → stories archivées (déplacées par archive-stories.mjs)
 │   ├── JOURNAL.md      → mémoire entre sessions
 │   └── assets/         → maquettes, exports
-├── scripts/            → utilitaires Node.js (new-story, archive-stories)
+│       └── playground-archive/  → pré-maquettes archivées (déplacées par archive-mockups.mjs)
+├── scripts/            → utilitaires Node.js (new-story, archive-stories, archive-mockups)
 ├── src/                → code frontend
+│   └── playground/     → pré-maquettes en code (éphémère, archivé en fin de MVP)
 └── server/             → code backend / API
 ```

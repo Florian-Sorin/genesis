@@ -81,7 +81,7 @@
 
 #### Prompt maquette
 
-<!-- Prompt utilisé pour générer la maquette via IA (v0, Claude, Visily...). -->
+<!-- Prompt utilisé pour générer la maquette via IA (Uizard, Visily, Figma AI, Excalidraw Magic, Claude Artifacts...). -->
 <!-- Garder le prompt exact pour pouvoir régénérer ou faire évoluer. -->
 <!-- Si pas encore généré, écrire le prompt ici avant de le soumettre. -->
 
@@ -91,10 +91,23 @@
 
 #### Lien / asset
 
-<!-- URL v0.dev, lien Visily, ou chemin vers l'image dans docs/assets/. -->
+<!-- Maquette externe (Uizard, Visily, Figma, Excalidraw, Penpot...). -->
+<!-- Pour les outils sans lien public natif : exporter l'image dans docs/assets/. -->
 
 - Lien :
 - Asset : `docs/assets/S01-[nom].png`
+
+#### Maquette playground (optionnel)
+
+<!-- Pré-maquette en code Vue/Nuxt dans src/playground/ avant intégration dans pages/. -->
+<!-- À utiliser pour les écrans interactifs ou quand le rendu réel doit être validé. -->
+<!-- Voir docs/KICKOFF.md section "Le dossier src/playground/" pour les détails. -->
+<!-- Statuts : `à valider` / `validée` / `portée` (intégrée dans pages/components). -->
+
+- Fichier : `src/playground/s01-[nom].vue`
+- Statut : <!-- à valider / validée / portée -->
+- Variantes explorées : <!-- ex : s01a-login.vue (magic link), s01b-login.vue (password+OAuth) -->
+
 
 ---
 

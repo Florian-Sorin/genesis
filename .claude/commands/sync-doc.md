@@ -37,12 +37,23 @@ Audite la cohérence entre code et documentation.
    - Vérifier qu'aucun fichier story n'est orphelin (présent mais absent de l'index).
    - Si `docs/stories/` contient plus de **15** stories `[done]`, suggérer de lancer `node scripts/archive-stories.mjs`.
 
-7. **Variables d'environnement**
+7. **Wireframes vs écrans référencés**
+   - Lire les champs `Écrans :` de chaque story dans `docs/stories/*.md`.
+   - Vérifier que chaque ID d'écran cité (S01, S02, …) existe dans `docs/WIREFRAMES.md` (section H3 dédiée).
+   - Signaler les écrans cités sans section dédiée et les sections d'écran orphelines (jamais référencées par une story).
+
+8. **Playground vs wireframes**
+   - Lister `src/playground/*.{vue,jsx,tsx,svelte,html}` si le dossier existe.
+   - Pour chaque fichier, vérifier qu'il est référencé dans `WIREFRAMES.md` (champ "Maquette playground").
+   - Signaler les fichiers playground orphelins (présents mais non référencés).
+   - Si toutes les maquettes playground ont le statut `portée` dans `WIREFRAMES.md`, suggérer de lancer `node scripts/archive-mockups.mjs`.
+
+9. **Variables d'environnement**
    - Lire `docs/ARCHITECTURE.md` section 9.
    - Comparer avec `.env.example`.
    - Signaler les variables manquantes des deux côtés.
 
-8. Produire un rapport court :
-   - ✅ Points cohérents
-   - ⚠️ Divergences détectées (avec suggestion de correction)
-   - ❌ Incohérences bloquantes à corriger avant de continuer (notamment RLS manquantes)
+10. Produire un rapport court :
+    - ✅ Points cohérents
+    - ⚠️ Divergences détectées (avec suggestion de correction)
+    - ❌ Incohérences bloquantes à corriger avant de continuer (notamment RLS manquantes)

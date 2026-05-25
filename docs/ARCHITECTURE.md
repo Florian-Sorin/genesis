@@ -61,7 +61,8 @@
 │   ├── pages/          # routes (ou screens/ pour Flutter)
 │   ├── composables/    # logique réutilisable (hooks, providers)
 │   ├── lib/            # clients tiers, utilitaires
-│   └── types/          # types TypeScript globaux
+│   ├── types/          # types TypeScript globaux
+│   └── playground/     # pré-maquettes en code (éphémère, archivé en fin de MVP)
 ├── server/
 │   ├── api/            # endpoints / edge functions
 │   └── db/             # schéma Drizzle, migrations
@@ -73,6 +74,8 @@
 ├── AGENTS.md           # instructions agent (source de vérité)
 └── CLAUDE.md           # alias compat Claude Code (import AGENTS.md)
 ```
+
+> Détail sur `src/playground/` : zone tampon entre la maquette externe (Uizard/Figma/etc.) et l'intégration finale dans `pages/` et `components/`. Versionné pendant le MVP, archivé à la fin via `scripts/archive-mockups.mjs`. Voir `docs/KICKOFF.md` section "Le dossier `src/playground/`" pour le cycle de vie complet.
 
 ---
 
