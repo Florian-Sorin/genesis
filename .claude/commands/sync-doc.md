@@ -48,12 +48,20 @@ Audite la cohérence entre code et documentation.
    - Signaler les fichiers playground orphelins (présents mais non référencés).
    - Si toutes les maquettes playground ont le statut `portée` dans `WIREFRAMES.md`, suggérer de lancer `node scripts/archive-mockups.mjs`.
 
-9. **Variables d'environnement**
+
+9. **Design et handoffs**
+   - Vérifier que chaque écran `approved`, `synced` ou `implemented` possède un handoff local.
+   - Vérifier la cohérence des statuts et versions entre `WIREFRAMES.md` et `docs/design/screens/`.
+   - Signaler les briefs obsolètes par rapport à leurs sources et les handoffs sans référence ou recette.
+   - Signaler les composants et tokens utilisés par les handoffs mais absents de `DESIGN.md`.
+   - Vérifier que la preview réelle correspond à la section « Design preview » de `ARCHITECTURE.md`.
+
+10. **Variables d'environnement**
    - Lire `docs/ARCHITECTURE.md` section 9.
    - Comparer avec `.env.example`.
    - Signaler les variables manquantes des deux côtés.
 
-10. Produire un rapport court :
+11. Produire un rapport court :
     - ✅ Points cohérents
     - ⚠️ Divergences détectées (avec suggestion de correction)
     - ❌ Incohérences bloquantes à corriger avant de continuer (notamment RLS manquantes)

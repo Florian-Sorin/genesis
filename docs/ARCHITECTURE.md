@@ -47,6 +47,21 @@
 **CI/CD :**         <!-- ex : GitHub Actions -->
 **Budget infra :**  <!-- ex : < 20€/mois hors Supabase -->
 
+### Design preview
+
+**Mécanisme :** <!-- route Web, Storybook, Flutter preview, SwiftUI Preview... -->
+**Emplacement :** <!-- chemin dépendant de la stack -->
+**Commande :**
+**Extensions autorisées :**
+**Données fictives :**
+**Procédure de portage :**
+
+Le code exporté par Claude Design reste généré et remplaçable tant qu'il n'a pas été porté et relu selon les conventions du projet.
+
+### Risques outils de design
+
+Claude Design partage son quota avec les autres usages Claude. Le workflow doit rester utilisable avec `DESIGN.md`, `WIREFRAMES.md`, les handoffs locaux et la preview de la stack lorsque l'outil est indisponible.
+
 ---
 
 ## 2. Structure du projet

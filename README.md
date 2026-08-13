@@ -2,7 +2,7 @@
 
 > Template de démarrage de projet SaaS — structure documentaire et configuration agent pour développement assisté par IA.
 
-**Version :** `v0.4.0`
+**Version :** `v0.5.0`
 **Compatible avec :** Cursor, Claude Code (et tout agent qui lit `AGENTS.md` ou `CLAUDE.md` à la racine).
 
 ---
@@ -21,24 +21,23 @@ Une story à la fois, traçable, testée, sécurisée. Le développeur reste le 
 1. Clone Genesis comme base, renomme, init un nouveau repo Git.
 2. Ouvre le projet dans Cursor ou Claude Code.
 3. Lance la commande `/init` (ou demande à l'agent : "démarre le workflow d'initialisation").
-4. Laisse-toi guider par les **4 phases** ci-dessous. Compte ~1 h pour spécifier un projet de bout en bout.
+4. Laisse-toi guider par les **4 phases de conception**, puis par le développement, ci-dessous. Compte ~1 h pour spécifier un projet de bout en bout.
 
-### Le workflow en 4 phases
+### Le workflow en 4 phases de conception
 
 > Détail complet : [`docs/KICKOFF.md`](docs/KICKOFF.md). Tout le mécanisme de gates de validation et de questions par bloc y est documenté.
 
 ```
-Phase 1 — Pitch brut                           (5 min, toi seul)
+Phase 1 — Pitch brut
    ↓ [Gate 1 : BRIEF.md validé]
-Phase 2 — Interview structurée                 (30-45 min, toi + agent)
-   ↓ [Gate 2 : FUNCTIONAL + ARCHITECTURE + SECURITY validés]
-Phase 3 — Itération par module fonctionnel     (variable, toi + agent)
-   pour chaque module MVP, dans l'ordre :
-     3a. Wireframes du module                  (WIREFRAMES.md + lien outil externe)
-     3b. Stories du module                     (STORIES.md + docs/stories/ST-XXX-*.md)
-     ↓ [Gate 3 : module validé avant le suivant]
-   ↓
-Codage story par story                         (workflow normal : /story, /ready, /done)
+Phase 2 — Fonctionnel, architecture et sécurité
+   ↓ [Gate 2]
+Phase 3 — Fondations UX/UI
+   ↓ [Gate design : DESIGN.md validé]
+Phase 4 — Conception par module
+   brief → Claude Design → validation → handoff → stories
+   ↓ [Gate module]
+Développement story par story : /story → /ready → /done
 ```
 
 **Principe directeur** : pas de phase suivante sans gate validé. Un gate = une checklist automatique (l'agent vérifie que les sections obligatoires sont remplies) + un résumé soumis au dev pour validation explicite. Une story créée sur des bases non validées sera réécrite — autant bloquer en Phase 2 que coder dans le vide.
@@ -69,13 +68,16 @@ L'agent enchaîne 5 blocs de questions ciblées, en validant chaque bloc avant d
 
 À chaque choix structurant, un ADR est ajouté dans `ARCHITECTURE.md` section 8. À la fin, tu as 3 fichiers entièrement spécifiés.
 
-### Phase 3 — Itération par module (variable)
+### Phases 3 et 4 — Design puis itération par module
+
+La phase 3 fixe dans `DESIGN.md` les plateformes, principes UX, tokens, composants et exigences d'accessibilité. Le mécanisme de preview adapté à la stack est déclaré dans `ARCHITECTURE.md`.
 
 Pour chaque module MVP, dans l'ordre :
 
-1. **Wireframes** : description textuelle dans `WIREFRAMES.md` + lien vers ton outil de maquette externe (Uizard, Visily, Figma, Excalidraw, Penpot, Claude Artifacts — au choix). Optionnellement, pré-maquette en code dans `src/playground/` pour les écrans interactifs.
-2. **Stories** : découpage du module en stories MVP via `node scripts/new-story.mjs`, enrichies avec tâches techniques, tests à écrire, critères de done et impact sécurité.
-3. **Validation du module** : Gate 3 — tu peux soit enchaîner sur le module suivant, soit commencer à coder ce module avec `/story`.
+1. **Brief** : `/design [module]` prépare le parcours, les écrans, états et contraintes.
+2. **Claude Design** : structure basse fidélité, deux ou trois directions au maximum, correction groupée et prototype interactif.
+3. **Handoff** : la variante validée est synchronisée sous `docs/design/screens/SXX/`. Le dépôt conserve les décisions nécessaires à Claude Code, même si Claude Design ou son quota est indisponible.
+4. **Stories** : découpage via `node scripts/new-story.mjs`, puis Gate module.
 
 **Avantage de l'itération par module** : tu peux préparer les wireframes du module 2 pendant que tu codes le module 1.
 
@@ -119,7 +121,9 @@ Le workflow `/init` est une orchestration — rien ne t'empêche de remplir les 
 │   ├── FUNCTIONAL.md     # spécifications fonctionnelles
 │   ├── ARCHITECTURE.md   # référence technique (stack, tests, Git)
 │   ├── SECURITY.md       # règles de sécurité transverses
-│   ├── WIREFRAMES.md     # maquettes & UI
+│   ├── DESIGN.md         # système visuel global et composants
+│   ├── WIREFRAMES.md     # spécifications des écrans
+│   ├── design/           # briefs et handoffs Claude Design
 │   ├── KICKOFF.md        # workflow d'initialisation (utilisé par /init)
 │   ├── STORIES.md        # index du backlog
 │   ├── stories/          # un fichier par story
@@ -178,7 +182,8 @@ Disponibles dans `.claude/commands/`. Pour Cursor, demander la même action à l
 
 | Commande      | Effet |
 |---------------|-------|
-| `/init`       | Orchestre le workflow d'initialisation d'un nouveau projet (4 phases, cf. `docs/KICKOFF.md`) |
+| `/init`       | Orchestre le workflow d'initialisation d'un nouveau projet |
+| `/design`     | Conçoit un module avec Claude Design et synchronise son handoff |
 | `/story`      | Affiche la story `[wip]` ou la prochaine `[todo]` avec tout le contexte |
 | `/ready`      | Vérifie la Definition of Ready avant de démarrer une story (inclut l'arbitrage wireframe) |
 | `/done`       | Vérifie la Definition of Done et marque la story `[done]` |
@@ -189,6 +194,14 @@ Disponibles dans `.claude/commands/`. Pour Cursor, demander la même action à l
 ---
 
 ## Changelog
+
+### v0.5.0 — 2026-08-13
+
+- Ajout de `DESIGN.md`, des briefs de modules et des handoffs versionnés par écran.
+- Claude Design devient l'atelier visuel privilégié, avec un fallback local indépendant du quota.
+- Ajout de `/design`, d'un Gate design et d'un Gate module renforcé.
+- `/ready`, `/done` et `/sync-doc` contrôlent désormais le cycle de vie des écrans et composants.
+- La preview design est déclarée par la stack au lieu d'être liée à Vue/Nuxt.
 
 ### v0.4.0 — 2026-05-25
 

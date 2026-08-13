@@ -12,18 +12,9 @@
 
 ---
 
-## Système de design
+## Référence visuelle globale
 
-<!-- Décisions visuelles globales. L'agent s'y réfère pour tout composant UI. -->
-
-**Style général :**      <!-- ex : clean / minimaliste / dashboard pro / grand public -->
-**Couleur primaire :**   <!-- ex : #6366F1 (indigo) -->
-**Couleur neutre :**     <!-- ex : zinc / slate / gray -->
-**Mode sombre :**        <!-- oui / non / optionnel -->
-**Typographie :**        <!-- ex : Inter (sans-serif système) -->
-**Densité :**            <!-- compacte / normale / aérée -->
-**Rayon des coins :**    <!-- ex : rounded-lg (Tailwind) -->
-**Référence visuelle :** <!-- URL ou nom d'un produit dont tu t'inspires -->
+Les principes UX, tokens, règles d'accessibilité et composants partagés sont définis dans [`DESIGN.md`](DESIGN.md). Ce fichier décrit les écrans ; il ne doit pas redéfinir le système visuel global.
 
 ---
 
@@ -81,30 +72,33 @@
 
 #### Prompt maquette
 
-<!-- Prompt utilisé pour générer la maquette via IA (Uizard, Visily, Figma AI, Excalidraw Magic, Claude Artifacts...). -->
+<!-- Recette utilisée avec Claude Design, ou l'outil de fallback choisi. -->
 <!-- Garder le prompt exact pour pouvoir régénérer ou faire évoluer. -->
 <!-- Si pas encore généré, écrire le prompt ici avant de le soumettre. -->
 
-```
-[coller le prompt ici]
-```
+**Intention :** <!-- résumé court -->
+**Recette reproductible :** `docs/design/screens/S01/prompt.md`
 
 #### Lien / asset
 
-<!-- Maquette externe (Uizard, Visily, Figma, Excalidraw, Penpot...). -->
+<!-- Prototype Claude Design ou outil de fallback. -->
 <!-- Pour les outils sans lien public natif : exporter l'image dans docs/assets/. -->
 
-- Lien :
-- Asset : `docs/assets/S01-[nom].png`
+- Outil : Claude Design <!-- chemin privilégié ; autre outil possible en fallback -->
+- Lien / identifiant :
+- Version approuvée :
+- Statut : <!-- draft / review / approved / synced / implemented / obsolete -->
+- Handoff : `docs/design/screens/S01/README.md`
+- Référence : `docs/design/screens/S01/reference.png`
 
 #### Maquette playground (optionnel)
 
-<!-- Pré-maquette en code Vue/Nuxt dans src/playground/ avant intégration dans pages/. -->
+<!-- Pré-maquette dans le mécanisme de preview déclaré dans ARCHITECTURE.md. -->
 <!-- À utiliser pour les écrans interactifs ou quand le rendu réel doit être validé. -->
 <!-- Voir docs/KICKOFF.md section "Le dossier src/playground/" pour les détails. -->
 <!-- Statuts : `à valider` / `validée` / `portée` (intégrée dans pages/components). -->
 
-- Fichier : `src/playground/s01-[nom].vue`
+- Fichier : <!-- chemin dépendant de la stack -->
 - Statut : <!-- à valider / validée / portée -->
 - Variantes explorées : <!-- ex : s01a-login.vue (magic link), s01b-login.vue (password+OAuth) -->
 
@@ -113,16 +107,7 @@
 
 ## Composants partagés
 
-<!-- Éléments UI qui reviennent sur plusieurs écrans. -->
-<!-- Documenter ici évite que l'agent les réinvente à chaque fois. -->
-
-### [Nom du composant]
-
-<!-- ex : Navbar, Sidebar, Card produit, Toast, Modal de confirmation -->
-
-**Présent sur :**  <!-- IDs des écrans -->
-**Props clés :**   <!-- les variantes ou paramètres importants -->
-**Description :**
+Le catalogue canonique vit dans `DESIGN.md`. L'inventaire d'un écran dans son handoff indique les composants réutilisés, créés ou modifiés.
 
 ---
 
