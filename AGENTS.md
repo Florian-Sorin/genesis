@@ -23,7 +23,8 @@ Si le repo est encore au stade template (BRIEF.md contient `[NOM DU PROJET]`, pa
 
 1. **Phase 1** — Pitch brut → `BRIEF.md`
 2. **Phase 2** — Interview structurée → `FUNCTIONAL.md` + `ARCHITECTURE.md` + `SECURITY.md`
-3. **Phase 3** — Itération par module → `WIREFRAMES.md` + stories du module
+3. **Phase 3** — Fondations UX/UI → `DESIGN.md`
+4. **Phase 4** — Itération par module → Claude Design + handoffs + stories
 
 Commande dédiée : `/init`. Chaque phase a un **gate de validation** (checklist auto + résumé pour validation explicite du dev). Pas de phase suivante sans gate validé.
 
@@ -36,10 +37,12 @@ Commande dédiée : `/init`. Chaque phase a un **gate de validation** (checklist
 > 2. `docs/FUNCTIONAL.md` — spécifications fonctionnelles (**source de vérité comportementale**)
 > 3. `docs/ARCHITECTURE.md` — stack et conventions techniques
 > 4. `docs/SECURITY.md` — règles de sécurité transverses (RLS, permissions, secrets)
-> 5. `docs/STORIES.md` — index du backlog → identifier la prochaine story `[todo]`
-> 6. `docs/stories/ST-XXX-*.md` — la story active (un fichier par story)
-> 7. `docs/WIREFRAMES.md` — section(s) correspondant à la story
-> 8. `docs/JOURNAL.md` — apprentissages des sessions précédentes (skim, pas lecture exhaustive)
+> 5. `docs/DESIGN.md` — système visuel global, composants et accessibilité
+> 6. `docs/STORIES.md` — index du backlog → identifier la prochaine story `[todo]`
+> 7. `docs/stories/ST-XXX-*.md` — la story active (un fichier par story)
+> 8. `docs/WIREFRAMES.md` — section(s) correspondant à la story
+> 9. `docs/design/screens/SXX/README.md` — handoff approuvé des écrans concernés
+> 10. `docs/JOURNAL.md` — apprentissages des sessions précédentes (skim, pas lecture exhaustive)
 
 ---
 
@@ -51,8 +54,9 @@ En cas de conflit entre documents, l'ordre de précédence est :
 2. `docs/SECURITY.md` — la sécurité ne se négocie pas
 3. `docs/FUNCTIONAL.md` — comportement attendu
 4. `docs/ARCHITECTURE.md` — choix techniques
-5. `docs/WIREFRAMES.md` — UI (ne décrit jamais un comportement métier seul)
-6. `docs/stories/*.md` — implémentation
+5. `docs/DESIGN.md` — règles visuelles globales (ne décrit jamais un comportement métier seul)
+6. `docs/WIREFRAMES.md` et `docs/design/` — écrans et handoffs approuvés
+7. `docs/stories/*.md` — implémentation
 
 Si `WIREFRAMES.md` contredit `FUNCTIONAL.md`, **`FUNCTIONAL.md` gagne** et il faut mettre à jour `WIREFRAMES.md`.
 
@@ -68,6 +72,7 @@ Une story ne peut passer en `[wip]` que si **tous** ces critères sont vrais :
 - [ ] Toutes les dépendances `Dépend de :` sont `[done]`
 - [ ] Le module fonctionnel concerné est entièrement spécifié dans `FUNCTIONAL.md`
 - [ ] Si la story référence des écrans, ces écrans existent dans `WIREFRAMES.md` (a minima Route + Contenu + Actions + Lien externe ou prompt)
+- [ ] Si la story implémente une UI, chaque écran est `synced` et possède un handoff complet sous `docs/design/screens/SXX/`
 - [ ] **Check wireframe au démarrage** : le dev a relu les wireframes des écrans concernés et explicitement choisi entre :
   - ✅ **OK tel quel** → on code
   - ✏️ **Ajustement mineur** → patch `WIREFRAMES.md`, commit dédié `[ST-XXX] adjust wireframes for [écran]`, on code
@@ -84,6 +89,7 @@ Si un critère n'est pas rempli : **ne pas démarrer**, signaler ce qui manque e
 - [ ] Tous les critères de done de la story satisfaits
 - [ ] Tests passent (cf. `ARCHITECTURE.md` section Tests)
 - [ ] Pas de `console.log` ou code commenté laissé
+- [ ] Pour une story UI, revue visuelle et comportementale effectuée et écran passé à `implemented`
 - [ ] `FUNCTIONAL.md` mis à jour si une règle métier a évolué
 - [ ] `ARCHITECTURE.md` mis à jour si une décision technique a été prise (ADR)
 - [ ] Entrée ajoutée dans `JOURNAL.md` si quelque chose de notable a été appris
@@ -212,6 +218,7 @@ En cas de doute sur un pattern, choisir la solution la plus lisible et la plus p
 <!-- Pour Cursor, ces actions peuvent être déclenchées en demandant à l'agent directement. -->
 
 - `/init`       — orchestre le workflow d'initialisation d'un nouveau projet (cf. `docs/KICKOFF.md`)
+- `/design`     — conçoit ou met à jour un module avec Claude Design et synchronise son handoff
 - `/story`      — affiche la story `[wip]` ou `[todo]` suivante avec son contexte complet
 - `/ready`      — vérifie la Definition of Ready pour la prochaine story `[todo]`
 - `/done`       — vérifie la Definition of Done et marque la story `[wip]` comme `[done]`
@@ -247,6 +254,8 @@ En cas de doute sur un pattern, choisir la solution la plus lisible et la plus p
 │   ├── ARCHITECTURE.md
 │   ├── SECURITY.md
 │   ├── WIREFRAMES.md
+│   ├── DESIGN.md
+│   ├── design/          → briefs de modules et handoffs Claude Design
 │   ├── KICKOFF.md      → workflow d'initialisation projet (utilisé par /init)
 │   ├── STORIES.md      → index du backlog
 │   ├── stories/        → un fichier par story

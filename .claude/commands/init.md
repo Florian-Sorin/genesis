@@ -15,7 +15,8 @@ Orchestre le workflow d'initialisation d'un nouveau projet (de l'idée à la pre
 2. Évaluer où en est le projet :
    - **Phase 1** : `BRIEF.md` contient encore `[NOM DU PROJET]` ou des placeholders dans les sections obligatoires.
    - **Phase 2** : BRIEF rempli, mais `FUNCTIONAL.md` ou `ARCHITECTURE.md` ont encore des placeholders structurants.
-   - **Phase 3** : Docs structurels OK, mais `WIREFRAMES.md` vide ou `STORIES.md` sans story réelle (encore au stade template).
+   - **Phase 3** : docs structurels OK, mais `DESIGN.md` contient encore ses placeholders structurants.
+   - **Phase 4** : fondations design validées, mais `WIREFRAMES.md` vide ou `STORIES.md` sans story réelle.
    - **Bootstrappé** : au moins une story `[done]` ou plusieurs stories `[todo]` réelles. Dans ce cas, **arrêter** et signaler au dev qu'il doit utiliser `/story` ou `/new-story`.
 3. Demander au dev de confirmer la phase détectée avant de continuer.
 
@@ -46,13 +47,19 @@ Enchaîner les 5 blocs définis dans `docs/KICKOFF.md` (Périmètre, Parcours, A
 
 À la fin des 5 blocs, lancer le **Gate 2**.
 
-#### Phase 3 — Itération par module
+#### Phase 3 — Fondations UX/UI
+
+1. Remplir `DESIGN.md` et la section Design preview de `ARCHITECTURE.md`.
+2. Guider l'import du système dans Claude Design, ou documenter le fallback.
+3. Lancer le Gate design de `KICKOFF.md`.
+
+#### Phase 4 — Itération par module
 
 1. Lire la liste des modules MVP dans `FUNCTIONAL.md` section 3.
 2. Pour chaque module, dans l'ordre :
-   - **3a. Wireframes** : remplir la section H3 de chaque écran dans `WIREFRAMES.md`. Demander le lien vers l'outil externe utilisé par le dev (Uizard, Visily, Figma, Excalidraw, Penpot, Claude Artifacts… cf. `docs/KICKOFF.md` Phase 3a) ou le prompt à utiliser. Mettre l'index à jour.
-   - **3b. Stories** : utiliser `node scripts/new-story.mjs` pour chaque story du module. Enrichir le fichier généré.
-   - Lancer le **Gate 3** pour ce module.
+   - **4a-4c. Design** : exécuter `/design [module]`, concevoir dans Claude Design, remplir les écrans dans `WIREFRAMES.md` et synchroniser leurs handoffs locaux.
+   - **4d. Stories** : utiliser `node scripts/new-story.mjs` pour chaque story du module. Enrichir le fichier généré.
+   - Lancer le **Gate module** pour ce module.
    - Demander au dev s'il veut enchaîner sur le module suivant ou commencer à coder le module qui vient d'être préparé.
 
 ### 2. Mécanique des gates
@@ -64,7 +71,8 @@ Chaque gate suit le même protocole (= choix `both` du dev) :
 3. **Si la checklist est toute verte** : produire un **résumé** structuré pour le dev :
    - Phase 1 : résumé de la vision (Problème + Solution + Cible + Hors scope).
    - Phase 2 : résumé du périmètre fonctionnel (modules MVP), de la stack, des points sécurité notables.
-   - Phase 3 : récap du module (écrans définis + stories créées + dépendances).
+   - Phase 3 : récap des fondations visuelles.
+   - Phase 4 : récap du module (écrans définis + stories créées + dépendances).
 4. **Demander validation explicite** : "Go pour passer à la phase suivante / au module suivant ?" Attendre confirmation du dev.
 
 ### 3. Fin de l'initialisation
@@ -83,6 +91,6 @@ Une fois la première story prête à coder :
 
 - **Ne jamais sauter une phase**, même si le dev l'indique connaître. Le gate sert à attraper les angles morts.
 - **Ne jamais marquer une story `[done]`** pendant l'init. L'init ne code rien, elle prépare.
-- **Ne jamais lancer `scripts/new-story.mjs`** avant la Phase 3. Une story créée trop tôt est une story à réécrire.
+- **Ne jamais lancer `scripts/new-story.mjs`** avant la Phase 4 et la validation du Gate module. Une story créée trop tôt est une story à réécrire.
 - **Limiter le ping-pong** : grouper les questions par bloc (5 à 10 questions max par tour), pas une question à la fois.
 - **Si le dev veut interrompre** : sauvegarder l'état actuel des fichiers (les TODOs marqués `<!-- TODO : ... -->` servent de bookmarks) et signaler où on en était.

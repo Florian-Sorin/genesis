@@ -77,6 +77,19 @@
 
 ---
 
+## Impact design
+
+<!-- À remplir pour toute story qui crée ou modifie une interface. Sinon supprimer. -->
+
+- **Écrans et versions approuvées :**
+- **Handoffs :**
+- **Composants réutilisés :**
+- **Composants créés ou modifiés :**
+- **Tokens créés ou modifiés :**
+- **Assets nécessaires :**
+
+---
+
 ## Notes
 
 <!-- Contraintes spécifiques, edge cases à ne pas oublier, -->

@@ -28,11 +28,15 @@ Phase 1 — Pitch brut                           (5 min, dev seul)
    ↓ [gate 1 : BRIEF.md validé]
 Phase 2 — Interview structurée                 (30-45 min, dev + agent)
    ↓ [gate 2 : FUNCTIONAL + ARCHITECTURE + SECURITY validés]
-Phase 3 — Itération par module fonctionnel     (variable, dev + agent)
+Phase 3 — Fondations UX/UI                     (15-30 min, dev + agent)
+   ↓ [gate design : DESIGN.md validé]
+Phase 4 — Itération par module fonctionnel     (variable, dev + agent)
    pour chaque module MVP, dans l'ordre :
-     3a. Wireframes du module                  (WIREFRAMES.md + lien outil externe au choix)
-     3b. Stories du module                     (STORIES.md + docs/stories/ST-XXX-*.md)
-     ↓ [gate 3 : module validé avant le suivant]
+     4a. Brief et écrans                       (docs/design/ + WIREFRAMES.md)
+     4b. Exploration et prototype              (Claude Design par défaut)
+     4c. Validation et handoff                 (docs/design/screens/)
+     4d. Stories du module                     (STORIES.md + docs/stories/ST-XXX-*.md)
+     ↓ [gate module : handoff et stories validés]
    ↓
 Codage story par story (workflow normal /story, /ready, /done)
 ```
@@ -156,30 +160,62 @@ Validation explicite : résumé du dev de chaque fichier + "go" final.
 
 ---
 
-## Phase 3 — Itération par module
+## Phase 3 — Fondations UX/UI
 
-**Objectif :** définir les wireframes et le découpage en stories **un module à la fois**, dans l'ordre de priorité.
+**Objectif :** donner à Claude Design et aux agents une référence visuelle globale avant de produire des écrans.
 
-Avantage : on peut commencer à coder le module 1 pendant qu'on prépare les wireframes du module 2. Feedback rapide.
+1. Remplir `DESIGN.md` : principes UX, plateformes et conventions natives, direction visuelle, références et anti-références, accessibilité, tokens et premières familles de composants.
+2. Déclarer dans `ARCHITECTURE.md` le mécanisme de preview propre à la stack cible.
+3. Importer ou reproduire le système approuvé dans Claude Design et noter sa version dans `DESIGN.md`.
+4. Ne pas concevoir tout le MVP : seules les fondations transverses sont figées ici.
 
-### Pour chaque module MVP, dans l'ordre
+### Gate design
 
-#### 3a. Wireframes du module
+- [ ] Plateformes, contexte d'usage, navigation globale et viewports de référence renseignés.
+- [ ] Direction visuelle, références et anti-références validées.
+- [ ] Accessibilité cible et contraintes adaptatives renseignées.
+- [ ] Tokens de base et composants structurants suffisamment définis pour concevoir le premier module.
+- [ ] Mécanisme de preview documenté dans `ARCHITECTURE.md`.
+- [ ] Système importé dans Claude Design, ou fallback explicitement choisi.
 
-1. Lister les écrans du module dans `WIREFRAMES.md` (index + section H3 par écran).
-2. Pour chaque écran, remplir : Route, Accès, Contenu & layout (description courte), Actions utilisateur, États.
-3. **Source de vérité visuelle = lien externe** (au choix du dev selon ses préférences et contraintes budget).
-   Outils courants 2026 (à arbitrer projet par projet) :
-   - **Uizard / Visily** — IA générative + édition, free tier généreux, lien partageable.
-   - **Excalidraw** — gratuit open source, AI native pour wireframes basse-fi.
-   - **Figma** — référence du marché, free 3 fichiers/3 pages (vite saturé sur un vrai projet).
-   - **Penpot** — alternative Figma open source illimitée, pas d'IA native.
-   - **v0.dev / Lovable** — génère React, peu adapté si la stack n'est pas React.
-4. Le dev colle le lien dans le champ "Lien / asset" de chaque écran. Si pas encore généré, noter le prompt dans "Prompt maquette".
-5. **Optionnel : pré-maquette en code (`src/playground/`)**. Pour les écrans où la maquette externe ne suffit pas (interactions, états dynamiques, validation du rendu réel), Cursor peut générer une page Vue/Nuxt jetable dans `src/playground/sXX-*.vue`. Voir section "Le dossier playground/" ci-dessous.
-6. Identifier les composants partagés (navbar, sidebar, modaux récurrents) et les documenter en bas de fichier.
+Validation explicite : le dev valide les fondations avant la conception détaillée du premier module.
 
-#### 3b. Stories du module
+---
+
+## Phase 4 — Itération par module
+
+**Objectif :** concevoir et découper **un module à la fois**. Le module 1 peut être codé pendant la préparation du module 2.
+
+### 4a. Brief et inventaire
+
+1. Lancer `/design [module]` et créer `docs/design/modules/[module].md` depuis le template.
+2. Référencer les règles pertinentes de `FUNCTIONAL.md` et `DESIGN.md` sans les dupliquer.
+3. Lister les écrans dans `WIREFRAMES.md` avec route, accès, contenu, actions et états.
+4. Valider le parcours et l'inventaire avant toute génération coûteuse.
+
+### 4b. Exploration dans Claude Design
+
+Claude Design est l'atelier privilégié pour les wireframes, variantes et prototypes interactifs. Le dépôt reste la source durable des décisions nécessaires à l'implémentation.
+
+Cycle nominal pour maîtriser le quota partagé :
+
+1. Une passe basse fidélité sur la structure et le parcours.
+2. Deux ou trois directions visuelles au maximum.
+3. Sélection explicite d'une direction.
+4. Une correction groupée par catégories : structure, contenu, hiérarchie, composants, adaptation et accessibilité.
+5. Une passe finale couvrant états et interactions.
+
+Ne jamais lancer l'exploration sans brief validé. Si Claude Design est indisponible, utiliser les mêmes documents avec une capture et la preview de la stack cible.
+
+### 4c. Validation et synchronisation
+
+1. Passer la variante retenue à `approved` après validation explicite du dev.
+2. Créer `docs/design/screens/SXX/` depuis `_SCREEN-HANDOFF-TEMPLATE.md`.
+3. Ajouter la référence visuelle, la recette reproductible, les assets, composants, tokens, interactions, états et contraintes adaptatives.
+4. Distinguer les fichiers canoniques des exports générés et remplaçables.
+5. Passer l'écran à `synced` seulement lorsque le handoff local est complet.
+
+### 4d. Stories du module
 
 1. Découper le module en stories `MVP` (taille cible : 1-3 demi-journées de dev).
 2. Pour chaque story : utiliser `scripts/new-story.mjs` (titre, priorité, dépendances, écrans, module).
@@ -191,12 +227,15 @@ Avantage : on peut commencer à coder le module 1 pendant qu'on prépare les wir
    - Critères de done spécifiques.
    - Impact sécurité si applicable (cf. `SECURITY.md` section 9).
 
-### Gate 3 — Sortie de module
+### Gate module — Sortie de module
 
 Checklist automatique :
 
 - [ ] `WIREFRAMES.md` : tous les écrans du module ont une section H3 remplie (a minima : Route, Accès, Contenu, Actions).
-- [ ] `WIREFRAMES.md` : index à jour, statut des écrans cohérent.
+- [ ] `WIREFRAMES.md` : index à jour et tous les écrans à implémenter sont `synced`.
+- [ ] Chaque écran possède un handoff, une référence approuvée ou une dérogation, et une recette reproductible.
+- [ ] États nominal/vide/chargement/erreur, adaptation, contenu long et accessibilité ont été revus.
+- [ ] Composants, tokens et assets nouveaux ou modifiés sont inventoriés.
 - [ ] `STORIES.md` : toutes les stories du module sont dans le backlog MVP avec un ID séquentiel.
 - [ ] Chaque story du module a son fichier `docs/stories/ST-XXX-*.md` et passe la Definition of Ready (cf. `AGENTS.md`).
 - [ ] Les dépendances entre stories sont cohérentes (pas de cycle, pas de référence à une story inexistante).
@@ -216,7 +255,7 @@ Validation explicite : le dev relit le backlog du module et valide.
 ### Quand l'utiliser
 
 - L'écran a un comportement interactif difficile à représenter dans Uizard/Figma (animations, états dynamiques, validation de formulaire en temps réel).
-- Tu veux **voir le rendu réel** (vrais composants shadcn-vue, vrais espacements Tailwind, vraie data) avant de t'engager.
+- Tu veux **voir le rendu réel** (vrais composants, vrais tokens et données représentatives) avant de t'engager.
 - Tu veux **explorer 2-3 variantes** d'un écran en parallèle sans polluer `pages/`.
 
 ### Quand **ne pas** l'utiliser
@@ -227,19 +266,18 @@ Validation explicite : le dev relit le backlog du module et valide.
 ### Convention
 
 ```
-src/playground/
-├── s01-login.vue              # une page par écran, naming aligné sur WIREFRAMES.md
-├── s02-magic-link-confirm.vue
+[preview-dir]/
+├── s01-login.[ext]            # format déclaré dans ARCHITECTURE.md
+├── s02-confirmation.[ext]
 ├── README.md                  # liste des maquettes, statut (à valider / validée / portée)
 ```
 
-- Accessible via une route dédiée (ex : Nuxt → `pages/playground/[name].vue` qui charge dynamiquement).
-- Ou via un script de build dédié, au choix.
-- Chaque fichier référence l'écran (`<!-- S01 — cf. WIREFRAMES.md -->` en tête).
+- Accessible avec le mécanisme et la commande « Design preview » déclarés dans `ARCHITECTURE.md`.
+- Chaque fichier référence l'écran (`S01 — cf. WIREFRAMES.md`, selon la syntaxe de la stack en tête).
 
 ### Cycle de vie
 
-1. **Création** — pendant la Phase 3 ou avant de prendre une story de codage UI lourde.
+1. **Création** — pendant la Phase 4 ou avant de prendre une story de codage UI lourde.
 2. **Validation** — quand la maquette est OK, tu portes le code vers `pages/` ou `components/`.
 3. **Archive** — en fin de MVP, lancer `node scripts/archive-mockups.mjs` pour déplacer tout vers `docs/assets/playground-archive/` (référence historique).
 4. **Suppression du dossier** — une fois archivé, `src/playground/` est supprimé du projet.
@@ -249,7 +287,7 @@ src/playground/
 Chaque écran peut avoir, en plus du lien externe :
 
 ```markdown
-**Maquette playground :** `src/playground/s01-login.vue` (statut : à valider / validée / portée)
+**Maquette playground :** `[preview-dir]/s01-login.[ext]` (statut : à valider / validée / portée)
 ```
 
 ---
