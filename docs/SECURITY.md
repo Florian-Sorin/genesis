@@ -8,10 +8,11 @@
 
 ## 1. Principes
 
-1. **Défense en profondeur** — chaque couche valide indépendamment (frontend, API, DB).
-2. **Default deny** — par défaut, personne ne peut rien. On ouvre explicitement.
-3. **Least privilege** — chaque rôle / clé / service a le strict minimum nécessaire.
+1. **Défense en profondeur** — chaque couche valide indépendamment quand elle existe (client, API, données).
+2. **Default deny** — par défaut, un acteur n'accède qu'à ce qui lui est explicitement autorisé.
+3. **Least privilege** — chaque rôle, clé et service a le strict minimum nécessaire.
 4. **Secrets jamais en clair** — ni dans le code, ni dans les commits, ni dans les logs.
+5. **Contrôles adaptés à la stack** — Genesis impose un résultat de sécurité, pas PostgreSQL, Supabase ou un fournisseur précis.
 
 ---
 
@@ -19,42 +20,46 @@
 
 <!-- À adapter au projet. Aligner avec FUNCTIONAL.md section 4. -->
 
-**Méthode :**     <!-- ex : Supabase Auth (email/password + magic link) -->
+**Méthode :**     <!-- ex : Supabase Auth / Auth0 / session serveur / OAuth -->
 **Sessions :**    <!-- durée, refresh, multi-device -->
-**Vérification :** <!-- côté serveur uniquement, jamais se fier au front -->
+**Vérification :** <!-- où et comment la session est vérifiée -->
 **MFA :**         <!-- prévu MVP / V2 / non -->
 
 ### Règles
 
-- Tous les endpoints non-publics vérifient la session côté serveur avant toute action.
-- Pas de stockage d'identifiant utilisateur sensible côté client (autre que JWT/cookie session).
-- Logout côté serveur invalide la session (pas juste suppression du cookie).
-- Tentatives de connexion : rate-limit (`5 tentatives / 15 min` minimum).
+- Toute action non publique vérifie l'identité dans une couche de confiance, jamais uniquement via l'état du client.
+- Ne pas exposer au client de credential privilégié ou de secret serveur.
+- La déconnexion et la révocation de session suivent les capacités réelles du provider choisi.
+- Les endpoints d'authentification exposés au public disposent d'une protection anti-abus adaptée au risque.
 
 ---
 
-## 3. Autorisation & RLS (PostgreSQL / Supabase)
+## 3. Autorisation et accès aux données
 
 ### Règle fondamentale
 
-> **Toute table créée doit avoir RLS activée et au moins une policy écrite avant la première lecture ou écriture applicative.**
+> **Toute ressource utilisateur ou métier privée doit avoir une règle d'autorisation explicite avant sa première exposition applicative.**
 
-Si tu crées une table sans RLS, considère ça comme une **régression critique** à corriger immédiatement.
+Le mécanisme dépend de la stack :
 
-### Pattern par défaut
+- PostgreSQL/Supabase ou moteur avec Row Level Security : activer RLS et écrire les policies nécessaires.
+- Backend avec ORM/API : appliquer l'autorisation côté serveur sur chaque lecture/écriture concernée.
+- Backend-as-a-Service avec règles natives : documenter et tester ces règles.
+- Stockage objet : appliquer des règles d'accès ou URLs signées selon le besoin.
 
-Pour toute table contenant des données utilisateur (`user_id` ou équivalent) :
+L'absence de RLS n'est pas une régression si la technologie ne la propose pas ; **l'absence de contrôle d'autorisation équivalent en est une**.
+
+### Pattern PostgreSQL / Supabase, si applicable
+
+Pour une table contenant des données utilisateur (`user_id` ou équivalent) :
 
 ```sql
--- Activer RLS
 ALTER TABLE [nom_table] ENABLE ROW LEVEL SECURITY;
 
--- L'utilisateur lit uniquement ses propres lignes
 CREATE POLICY "[nom_table]_select_own"
   ON [nom_table] FOR SELECT
   USING (auth.uid() = user_id);
 
--- L'utilisateur écrit uniquement sur ses propres lignes
 CREATE POLICY "[nom_table]_insert_own"
   ON [nom_table] FOR INSERT
   WITH CHECK (auth.uid() = user_id);
@@ -69,13 +74,13 @@ CREATE POLICY "[nom_table]_delete_own"
   USING (auth.uid() = user_id);
 ```
 
-Pour les tables partagées (équipe, organisation), utiliser une fonction `is_member_of(org_id)` plutôt que dupliquer la logique dans chaque policy.
+Pour des ressources partagées, centraliser autant que possible la logique d'appartenance plutôt que la dupliquer.
 
-### Service role
+### Credentials privilégiés
 
-- `service_role` bypasse RLS — l'utiliser **uniquement** côté serveur, **jamais** côté client.
-- Auditer chaque usage de `service_role` : il doit y avoir une raison documentée.
-- Ne jamais exposer la `service_role_key` dans une variable accessible au front (pas de `NEXT_PUBLIC_*`, etc.).
+- Toute clé qui bypasse les règles ordinaires reste côté serveur.
+- Chaque usage d'un credential privilégié doit être justifié par un besoin réel.
+- Ne jamais exposer une clé privilégiée dans une variable ou un bundle accessible au client.
 
 ---
 
@@ -83,108 +88,114 @@ Pour les tables partagées (équipe, organisation), utiliser une fonction `is_me
 
 ### Catégories
 
-| Type                          | Exemple                       | Stockage                      | Logs |
-|-------------------------------|-------------------------------|-------------------------------|------|
-| Identité                      | email, nom                    | DB (chiffré au repos)         | OK   |
-| Authentification              | mot de passe                  | Jamais en clair (hash bcrypt) | NON  |
-| Paiement                      | numéro CB                     | Jamais stocké (Stripe/LS)     | NON  |
-| PII sensible                  | adresse, téléphone            | DB + accès restreint          | NON  |
-| Contenu utilisateur           | documents, messages           | DB ou Storage avec RLS        | NON  |
+| Type | Exemple | Stockage | Logs |
+|---|---|---|---|
+| Identité | email, nom | stockage autorisé du projet | limiter |
+| Authentification | mot de passe | jamais en clair ; déléguer au provider ou hash adapté | NON |
+| Paiement | numéro CB | ne pas stocker ; déléguer au PSP | NON |
+| PII sensible | adresse, téléphone | accès restreint | NON par défaut |
+| Contenu utilisateur | documents, messages | stockage avec autorisation | NON par défaut |
 
 ### Règles
 
-- **Aucune PII dans les logs** (utiliser des IDs, pas les valeurs).
-- **Aucune donnée de paiement ne transite par notre serveur** (tokenisation côté provider).
-- **Chiffrement au repos** activé sur la BDD (par défaut chez Supabase, vérifier sur autres providers).
-- **Suppression de compte** = suppression effective des données, pas juste un soft-delete (sauf obligation légale).
+- Minimiser les PII dans les logs ; utiliser des identifiants techniques quand cela suffit.
+- Les données de paiement sensibles restent chez le provider de paiement quand celui-ci le permet.
+- Vérifier les garanties de chiffrement et de sauvegarde du fournisseur réellement choisi au lieu de les supposer.
+- La suppression de compte doit définir le devenir des données, y compris les éventuelles obligations légales de conservation.
 
 ---
 
 ## 5. Secrets & variables d'environnement
 
-- Tous les secrets vivent dans `.env` (local) ou les variables d'environnement de l'hébergeur (prod).
-- `.env` est dans `.gitignore`. Vérifier régulièrement avec `git status`.
-- `.env.example` liste les variables nécessaires sans valeurs.
-- Rotation des clés au moins une fois par an, et immédiatement si fuite suspectée.
-- Pas de `console.log(process.env.*)`, même temporairement.
+- Les secrets vivent dans un gestionnaire de secrets, les variables de l'hébergeur ou un `.env` local ignoré par Git selon la stack.
+- `.env.example` liste les variables nécessaires sans valeurs secrètes.
+- Rotation immédiate en cas de fuite ou suspicion ; rotation périodique selon le niveau de risque et les capacités du provider.
+- Ne jamais loguer le contenu des variables secrètes.
 
 ---
 
 ## 6. Validation des entrées
 
-### Côté serveur (obligatoire)
+### Couche de confiance
 
-- Toute donnée venant du client est **non-fiable**.
-- Validation systématique avec un schema (Zod, Valibot, etc.) avant tout traitement.
-- Rejeter au plus tôt, avec un message d'erreur sans détail technique exposé.
+- Toute donnée provenant d'un client ou d'un système externe est non fiable.
+- Valider type, format, taille et contraintes métier avant traitement dans la couche de confiance.
+- Rejeter les entrées invalides avec un message qui n'expose pas de détail interne sensible.
 
-### Côté client (UX uniquement)
+### Côté client
 
-- La validation front existe pour le retour rapide à l'utilisateur, **pas pour la sécurité**.
-- Ne jamais désactiver une protection serveur sous prétexte que le front la fait déjà.
+- La validation client améliore l'UX ; elle ne remplace jamais la validation dans une couche de confiance.
 
 ---
 
-## 7. Endpoints sensibles
+## 7. Endpoints et opérations sensibles
 
 ### Paiement
 
-- Double validation côté serveur du montant (jamais faire confiance au prix envoyé par le client).
-- Idempotency-key sur toutes les opérations de paiement.
-- Webhooks signés et vérifiés (signature du provider).
-- Logs détaillés (sans données CB) avec corrélation transaction ↔ utilisateur.
+- Le montant et les droits sont recalculés ou validés côté serveur.
+- Utiliser l'idempotence lorsque le provider ou le type d'opération le justifie.
+- Vérifier la signature des webhooks.
+- Ne jamais loguer de données de carte.
 
 ### Actions destructrices
 
-- Suppression de compte, de données massives : confirmation explicite (saisie d'un mot, double-click).
-- Logging avant exécution.
-- Pas de undo silencieux côté serveur.
+- Demander une confirmation proportionnée au risque.
+- Autoriser l'action côté serveur, pas seulement dans l'UI.
+- Prévoir une stratégie de récupération lorsque le coût d'une erreur le justifie.
 
 ### Endpoints IA
 
-- Rate-limit par utilisateur (coût + abuse).
-- Validation de la taille des inputs.
-- Pas de prompt injection : ne jamais concaténer des données utilisateur dans un prompt système.
-- Logs des prompts pour debug, mais **anonymisés** si PII.
+- Protéger coûts et abus par quota/rate-limit selon le modèle économique.
+- Limiter la taille et le type des entrées.
+- Traiter le contenu utilisateur et les sorties d'outils comme non fiables ; séparer instructions de confiance et données non fiables.
+- Ne pas loguer de prompts contenant des PII sans base légitime et protection adaptées.
 
 ---
 
-## 8. CORS, CSP, headers
+## 8. Web, headers et transport
 
-- CORS : whitelist explicite des origines, pas de `*` en prod.
-- CSP : au minimum `default-src 'self'`, adapter au cas par cas.
-- HSTS activé (`max-age` > 6 mois).
-- Cookies : `HttpOnly`, `Secure`, `SameSite=Lax` ou `Strict` selon le contexte.
+Si le projet expose une application Web :
+
+- CORS limité aux origines nécessaires.
+- CSP définie lorsque pertinente pour la stack et les ressources tierces.
+- HTTPS obligatoire en production ; HSTS lorsque le domaine et l'infrastructure le permettent.
+- Cookies de session configurés avec `HttpOnly`, `Secure` et un `SameSite` adapté au flow.
+
+Pour une app native ou desktop, appliquer les contrôles équivalents pertinents et supprimer les règles Web non applicables.
 
 ---
 
-## 9. Checklist par story (impact sécurité)
+## 9. Checklist par story — impact sécurité
 
-Si une story touche à un des éléments ci-dessous, **remplir la section "Impact sécurité"** du fichier de story :
+Pour une story concernée, documenter :
 
-- [ ] Création / modification d'une table → RLS + policies écrites
-- [ ] Nouvel endpoint serveur → auth vérifiée, validation des entrées
-- [ ] Manipulation de paiement → idempotence + webhook signé
-- [ ] Manipulation de données utilisateur → scope (qui peut quoi)
-- [ ] Nouveau provider tiers → secrets en env, jamais exposés au front
-- [ ] Upload de fichiers → validation type/taille, stockage avec RLS
-- [ ] Endpoint IA → rate-limit, pas de prompt injection
+- [ ] Nouvelle ressource/table/collection → règle d'autorisation définie et testée.
+- [ ] Nouvel endpoint/action serveur → auth, autorisation et validation vérifiées.
+- [ ] Paiement → montant/droits, idempotence si nécessaire et webhook vérifié.
+- [ ] Données utilisateur → qui peut lire, écrire, exporter et supprimer.
+- [ ] Nouveau provider → secrets, permissions minimales et données envoyées connues.
+- [ ] Upload → type, taille, stockage et contrôle d'accès.
+- [ ] IA → coût/abuse, injection, données sensibles et permissions d'outils.
 
 ---
 
 ## 10. Audit & revue
 
-- Avant le lancement public : audit complet des policies RLS (script `supabase db lint` ou équivalent).
-- Avant chaque release majeure : revue de `.env` (production) + secrets exposés.
-- Trimestriellement : revue des dépendances (`npm audit`, Snyk, ou équivalent).
+- Avant le lancement public : auditer les règles d'autorisation avec l'outil adapté à la stack (`supabase db lint` ou équivalent si applicable).
+- Avant une release sensible : revoir les secrets et permissions touchés.
+- Revoir périodiquement les dépendances avec l'outil naturel de l'écosystème.
+- Exécuter également les gates de `docs/QUALITY.md`, `docs/OPERATIONS.md` et `docs/RELEASE.md` aux moments prévus.
 
 ---
 
-## 11. Incidents
+## 11. Incidents et violation de données
 
 En cas de fuite ou suspicion :
 
-1. Rotation immédiate des clés concernées.
-2. Audit des logs sur la période suspecte.
-3. Notification utilisateurs si données personnelles touchées (RGPD : 72h).
-4. Post-mortem documenté dans `docs/JOURNAL.md`.
+1. Contenir l'incident et révoquer/faire tourner les credentials concernés.
+2. Préserver les preuves utiles et auditer les logs sur la période concernée.
+3. Évaluer les données, personnes et risques concernés avec le responsable approprié.
+4. Pour une violation de données personnelles soumise au RGPD, notifier l'autorité de contrôle dans les meilleurs délais et, si possible, sous 72 h après en avoir pris connaissance lorsqu'une notification est requise. Si la violation est susceptible d'engendrer un risque élevé pour les personnes, les informer dans les meilleurs délais, sous réserve des exceptions applicables.
+5. Documenter les faits, impacts et mesures prises ; consigner dans `JOURNAL.md` uniquement l'apprentissage durable et non des données sensibles d'incident.
+
+> Ce template fournit des garde-fous techniques et organisationnels ; il ne remplace pas un avis juridique ou sécurité adapté au contexte du produit.
