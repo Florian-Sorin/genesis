@@ -5,20 +5,18 @@
 
 ## Principe
 
-La qualité n'est pas un outil imposé par Genesis. Chaque projet déclare dans `ARCHITECTURE.md` les commandes réellement applicables à sa stack, puis les exécute systématiquement aux moments définis ci-dessous.
+La qualité n'est pas un outil imposé par Genesis. Chaque projet déclare dans `ARCHITECTURE.md` section 11 les commandes réellement applicables à sa stack, puis les exécute systématiquement aux moments définis ci-dessous.
 
 ## Commandes projet à déclarer
 
-Renseigner dans `ARCHITECTURE.md`, section Qualité :
+Renseigner `ARCHITECTURE.md` section 11 :
 
-- **Lint / format check :** commande ou `non applicable`.
-- **Typecheck / analyse statique :** commande ou `non applicable`.
-- **Tests unitaires :** commande ou `non applicable`.
-- **Tests E2E / intégration :** commande ou `non applicable`.
-- **Build production :** commande ou `non applicable`.
-- **Audit sécurité dépendances :** commande ou procédure, si pertinente.
-
-Une commande ne peut être marquée `non applicable` que si la stack ou le périmètre le justifie explicitement.
+- **Lint / format check :** commande ou `non applicable — raison`.
+- **Typecheck / analyse statique :** commande ou `non applicable — raison`.
+- **Tests unitaires :** commande ou `non applicable — raison`.
+- **Tests E2E / intégration :** commande ou `non applicable — raison`.
+- **Build production :** commande ou `non applicable — raison`.
+- **Audit sécurité dépendances :** commande/procédure ou `non applicable — raison`.
 
 ## Gate story
 
@@ -29,7 +27,7 @@ Avant `/done` :
 - [ ] Le typecheck ou l'analyse statique applicable passe.
 - [ ] Les tests unitaires concernés passent.
 - [ ] Les tests E2E/intégration prévus pour la story passent.
-- [ ] Le build production passe lorsque la story peut affecter la compilation, le bundling ou le packaging.
+- [ ] Le build production passe lorsque la story peut affecter compilation, bundling ou packaging.
 - [ ] Aucun test n'est skippé pour masquer une régression.
 - [ ] Aucune erreur ou warning nouvellement introduit et actionnable n'est ignoré sans justification.
 - [ ] Pour une story UI, la Visual QA de `VISUAL-QA.md` est terminée.
