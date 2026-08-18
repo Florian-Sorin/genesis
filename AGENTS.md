@@ -1,293 +1,193 @@
 # Instructions agent — [NOM DU PROJET]
 
-<!-- Source de vérité unique pour tous les agents IA (Cursor, Claude Code, etc.). -->
-<!-- Lu automatiquement à chaque session. -->
-<!-- Prime sur tout autre fichier du repo en cas de contradiction. -->
-<!-- Garder ce fichier concis : des règles courtes sont mieux suivies. -->
-
----
+<!-- Source de vérité principale pour tous les agents IA. -->
+<!-- Garder ce fichier court, stable et actionnable. Les procédures détaillées vivent dans docs/. -->
 
 ## Contexte projet
 
-<!-- Résumé en 3 lignes max. Ce que l'agent doit savoir avant tout. -->
-<!-- Ne pas dupliquer BRIEF.md — juste l'essentiel pour orienter la session. -->
-
 [NOM] est un [type de produit] pour [cible]. Stack : [résumé stack en une ligne].
-Développeur solo, side project. Prioriser la simplicité et la maintenabilité.
-
----
+Développeur solo, side project. Prioriser simplicité, maintenabilité, sécurité et capacité à livrer.
 
 ## Démarrer un nouveau projet
 
-Si le repo est encore au stade template (BRIEF.md contient `[NOM DU PROJET]`, pas de story réelle), **ne pas commencer à coder**. Suivre le workflow d'initialisation décrit dans `docs/KICKOFF.md` :
+Si `docs/BRIEF.md` est encore au stade template et qu'aucune story réelle n'existe, **ne pas coder**. Exécuter le workflow canonique de `docs/KICKOFF.md` :
 
-1. **Phase 1** — Pitch brut → `BRIEF.md`
-2. **Phase 2** — Interview structurée → `FUNCTIONAL.md` + `ARCHITECTURE.md` + `SECURITY.md`
-3. **Phase 3** — UX + Design Intelligence → brief, direction visuelle, puis `DESIGN.md`
-4. **Phase 4** — Itération par module → atelier de design + handoffs + stories
+1. Pitch → `BRIEF.md`
+2. Fonctionnel + architecture + sécurité
+3. UX + Design Intelligence
+4. Module par module : design/handoff → stories → Gate module
 
-Commande dédiée : `/init`. Chaque phase a un **gate de validation** (checklist auto + résumé pour validation explicite du dev). Pas de phase suivante sans gate validé.
+`/init` n'est qu'un adaptateur de ce workflow.
 
----
+## Ordre de lecture avant implémentation
 
-## Ordre de lecture obligatoire
+1. `docs/BRIEF.md`
+2. `docs/FUNCTIONAL.md`
+3. `docs/ARCHITECTURE.md`
+4. `docs/SECURITY.md`
+5. `docs/design/design-brief.md` et `docs/design/visual-direction.md`
+6. `docs/DESIGN.md`
+7. `docs/STORIES.md`
+8. story active dans `docs/stories/`
+9. sections utiles de `docs/WIREFRAMES.md`
+10. handoffs concernés dans `docs/design/screens/`
+11. `docs/QUALITY.md`
+12. `docs/VISUAL-QA.md` pour une story UI
+13. `docs/JOURNAL.md` en lecture rapide
 
-> Avant toute implémentation, lire dans l'ordre :
-> 1. `docs/BRIEF.md` — vision et périmètre
-> 2. `docs/FUNCTIONAL.md` — spécifications fonctionnelles (**source de vérité comportementale**)
-> 3. `docs/ARCHITECTURE.md` — stack et conventions techniques
-> 4. `docs/SECURITY.md` — règles de sécurité transverses (RLS, permissions, secrets)
-> 5. `docs/design/design-brief.md` puis `docs/design/visual-direction.md` — ambition et direction approuvée
-> 6. `docs/DESIGN.md` — système visuel dérivé, composants et accessibilité
-> 7. `docs/STORIES.md` — index du backlog → identifier la prochaine story `[todo]`
-> 8. `docs/stories/ST-XXX-*.md` — la story active (un fichier par story)
-> 9. `docs/WIREFRAMES.md` — section(s) correspondant à la story
-> 10. `docs/design/screens/SXX/README.md` — handoff approuvé des écrans concernés
-> 11. `docs/VISUAL-QA.md` — procédure de validation après implémentation UI
-> 12. `docs/JOURNAL.md` — apprentissages des sessions précédentes (skim, pas lecture exhaustive)
+Pour une release, lire également `docs/OPERATIONS.md` et `docs/RELEASE.md`.
 
----
+## Précédence des contrats
 
-## Hiérarchie de précédence des documents
+En cas de contradiction :
 
-En cas de conflit entre documents, l'ordre de précédence est :
+1. `AGENTS.md` — règles de travail agent
+2. `docs/SECURITY.md` — sécurité et autorisation
+3. `docs/FUNCTIONAL.md` — comportement produit
+4. `docs/ARCHITECTURE.md` — stack et décisions techniques
+5. `docs/QUALITY.md` — validations techniques
+6. `docs/design/visual-direction.md` — direction artistique
+7. `docs/DESIGN.md` — système visuel
+8. `docs/WIREFRAMES.md` et handoffs — écrans
+9. stories — unité d'implémentation
 
-1. `AGENTS.md` (ce fichier) — règles agent
-2. `docs/SECURITY.md` — la sécurité ne se négocie pas
-3. `docs/FUNCTIONAL.md` — comportement attendu
-4. `docs/ARCHITECTURE.md` — choix techniques
-5. `docs/design/visual-direction.md` — direction artistique approuvée
-6. `docs/DESIGN.md` — système global dérivé (ne décrit jamais un comportement métier seul)
-7. `docs/WIREFRAMES.md` et les handoffs — écrans approuvés
-8. `docs/stories/*.md` — implémentation
+`docs/KICKOFF.md`, `docs/VISUAL-QA.md`, `docs/OPERATIONS.md` et `docs/RELEASE.md` décrivent des procédures qui s'appuient sur ces sources, sans modifier leurs règles métier.
 
-Si `WIREFRAMES.md` contredit `FUNCTIONAL.md`, **`FUNCTIONAL.md` gagne** et il faut mettre à jour `WIREFRAMES.md`.
+## Definition of Ready
 
----
+Une story ne peut passer en `[wip]` que si :
 
-## Definition of Ready (avant de commencer une story)
+- [ ] son contexte est rempli ;
+- [ ] elle possède au moins une tâche technique et un critère de done ;
+- [ ] toutes ses dépendances sont `[done]` ;
+- [ ] son module est suffisamment spécifié dans `FUNCTIONAL.md` ;
+- [ ] ses impacts techniques sont compatibles avec `ARCHITECTURE.md` ;
+- [ ] si elle touche la sécurité, son impact sécurité est documenté selon `SECURITY.md` ;
+- [ ] si elle touche l'UI, ses écrans existent dans `WIREFRAMES.md`, la direction est approuvée et chaque écran à implémenter possède un handoff `synced` ;
+- [ ] pour une story UI, le développeur a relu les écrans et choisi explicitement : **OK**, **ajustement mineur** ou **changement structurel**.
 
-Une story ne peut passer en `[wip]` que si **tous** ces critères sont vrais :
+Un changement structurel qui modifie le comportement produit remonte d'abord à `FUNCTIONAL.md`, puis aux wireframes/handoffs, puis au découpage de story.
 
-- [ ] Contexte rempli (pas de placeholder vide)
-- [ ] Au moins une tâche technique listée
-- [ ] Au moins un critère de done listé
-- [ ] Toutes les dépendances `Dépend de :` sont `[done]`
-- [ ] Le module fonctionnel concerné est entièrement spécifié dans `FUNCTIONAL.md`
-- [ ] Si la story référence des écrans, ces écrans existent dans `WIREFRAMES.md` (a minima Route + Contenu + Actions + Lien externe ou prompt)
-- [ ] Si la story implémente une UI, chaque écran est `synced` et possède un handoff complet sous `docs/design/screens/SXX/`
-- [ ] Si la story implémente une UI, le design brief et la direction visuelle sont approuvés ; `DESIGN.md` en découle
-- [ ] **Check wireframe au démarrage** : le dev a relu les wireframes des écrans concernés et explicitement choisi entre :
-  - ✅ **OK tel quel** → on code
-  - ✏️ **Ajustement mineur** → patch `WIREFRAMES.md`, commit dédié `[ST-XXX] adjust wireframes for [écran]`, on code
-  - 🔄 **Changement structurel** → stop, remonter à `FUNCTIONAL.md` (cf. `docs/KICKOFF.md` section "Gestion des changements en cours")
-- [ ] Si la story touche à la sécurité (auth, données utilisateur, paiement), `SECURITY.md` a été lu et la section "Impact sécurité" de la story est remplie
+Si un critère manque : ne pas démarrer la story.
 
-Si un critère n'est pas rempli : **ne pas démarrer**, signaler ce qui manque et s'arrêter.
+## Definition of Done
 
----
+Une story ne peut passer `[done]` que si :
 
-## Definition of Done (avant de marquer `[done]`)
+- [ ] toutes ses tâches et critères de done sont satisfaits ;
+- [ ] le **Gate story de `docs/QUALITY.md`** est vert ;
+- [ ] aucun code de debug, secret ou contournement temporaire n'est laissé ;
+- [ ] les règles métier, ADR, variables, sécurité et design concernés sont synchronisés dans les sources canoniques ;
+- [ ] pour une story UI, `docs/VISUAL-QA.md` est exécuté et les écrans concernés sont `implemented` ;
+- [ ] les écarts intentionnels sont documentés ;
+- [ ] une entrée `JOURNAL.md` n'est ajoutée que si un apprentissage durable mérite d'être conservé ;
+- [ ] la branche est propre et mergeable selon le workflow Git du projet.
 
-- [ ] Toutes les tâches techniques cochées
-- [ ] Tous les critères de done de la story satisfaits
-- [ ] Tests passent (cf. `ARCHITECTURE.md` section Tests)
-- [ ] Pas de `console.log` ou code commenté laissé
-- [ ] Pour une story UI, boucle `docs/VISUAL-QA.md` effectuée aux viewports cibles et écran passé à `implemented`
-- [ ] `FUNCTIONAL.md` mis à jour si une règle métier a évolué
-- [ ] `ARCHITECTURE.md` mis à jour si une décision technique a été prise (ADR)
-- [ ] Entrée ajoutée dans `JOURNAL.md` si quelque chose de notable a été appris
-- [ ] Commit(s) propre(s), branche prête à merger
-
----
+`/done` exécute cette Definition of Done et `QUALITY.md` sans en maintenir de copie.
 
 ## Règles de travail
 
 ### Avant de coder
 
-- Identifier la story `[todo]` active dans `STORIES.md` (index).
-- Ouvrir `docs/stories/ST-XXX-*.md` correspondant.
-- Vérifier la **Definition of Ready**. Si KO → s'arrêter et signaler.
-- Créer la branche Git : `st-XXX-slug-court` à partir de `main`.
-- Passer la story à `[wip]` (dans le fichier de la story + dans l'index).
-- En cas d'ambiguïté sur le comportement attendu, poser UNE question avant de coder, pas plusieurs.
+- Identifier l'unique story active ou la prochaine story éligible.
+- Ouvrir son fichier et exécuter la Definition of Ready.
+- Créer/utiliser une branche dédiée selon `ARCHITECTURE.md`.
+- Ne pas inventer une règle produit manquante à partir d'un design ou d'une intuition technique.
 
 ### Pendant le développement
 
-- **Ne jamais introduire de technologie absente de `ARCHITECTURE.md`.**
-- **Ne jamais modifier le schéma de BDD sans mettre à jour `ARCHITECTURE.md` section 3.**
-- **Ne jamais créer une table sans RLS** (cf. `SECURITY.md`).
-- Cocher les tâches techniques dans le fichier de la story au fur et à mesure.
-- Un commit par tâche technique complétée. Format : `[ST-XXX] description courte`.
-- Si une décision technique structurante est prise en cours de route, l'ajouter en ADR dans `ARCHITECTURE.md`.
-- Si un blocage survient, passer la story à `[blocked]` avec raison dans les notes.
+- Ne jamais introduire une technologie absente de `ARCHITECTURE.md` sans décision explicite et mise à jour du document.
+- Ne jamais modifier le modèle de données sans synchroniser l'architecture et les règles d'autorisation.
+- Cocher les tâches au fur et à mesure.
+- Éviter tout refactoring hors scope qui augmente le risque sans servir la story.
+- En cas de décision structurante, créer/mettre à jour l'ADR concerné.
+- En cas de blocage, documenter la raison au lieu de masquer le problème.
 
 ### Après implémentation
 
-- Vérifier la **Definition of Done** (cf. ci-dessus).
-- Marquer la story `[done]` dans le fichier + dans l'index.
-- Ajouter une entrée dans `JOURNAL.md` (3-5 lignes max) si quelque chose mérite d'être retenu.
-- Merger la branche, supprimer la branche locale.
-- Ne jamais laisser une story en `[wip]` en fin de session sans note dans les Notes de la story.
+- Exécuter `/done` ou l'équivalent naturel de ses contrats.
+- Ne jamais laisser un `[wip]` ambigu sans note expliquant l'état réel.
 
----
+## Git
 
-## Workflow Git
+Par défaut :
 
-- Branche par story : `st-XXX-slug-court` (ex : `st-001-auth-supabase`).
-- Branche source : `main`.
-- Commits : `[ST-XXX] description courte` (impératif, < 72 caractères).
-- Un commit ≠ une story. Découper par tâche technique complétée.
-- Merge en fin de story (PR si en équipe, fast-forward si solo).
-- Ne jamais commit directement sur `main`.
+- branche principale `main` ;
+- une branche courte par story ;
+- commits intentionnels, petits et lisibles ;
+- pas de commit direct sur `main` lorsque la protection du projet l'interdit ;
+- tests/quality gates verts avant merge.
 
----
+Les conventions exactes du projet vivent dans `ARCHITECTURE.md`.
 
-## Tests
+## Tests et qualité
 
-Référence détaillée : `ARCHITECTURE.md` section Tests.
+La stratégie de tests et les commandes concrètes vivent dans `ARCHITECTURE.md`. Le contrat de validation vit dans `docs/QUALITY.md`.
 
-Règles minimales :
+Règles :
 
-- **Tout parcours critique a un test E2E** (auth, paiement, action principale du module).
-- **Toute logique métier complexe a un test unitaire** (validation, calcul, transformation).
-- **Une story n'est `[done]` que si les tests passent** localement.
-- Les tests qui flakent sont supprimés ou réparés immédiatement, jamais skippés.
+- parcours critiques couverts par E2E/intégration quand cela apporte une vraie protection ;
+- logique métier complexe couverte par tests unitaires ;
+- lint, typecheck/analyse statique, tests et build exécutés lorsqu'ils sont applicables ;
+- un test flaky est réparé ou supprimé, jamais ignoré comme bruit permanent.
 
----
+## Sécurité
 
-## Sécurité (rappel non-négociable)
+Référence : `docs/SECURITY.md`.
 
-Référence détaillée : `docs/SECURITY.md`.
+- Toute ressource privée doit avoir un contrôle d'autorisation explicite.
+- Utiliser RLS lorsque la stack la propose et que c'est le mécanisme retenu ; sinon appliquer un contrôle équivalent côté serveur ou via les règles natives du provider.
+- Aucun secret dans le code, les commits, les captures ou les logs.
+- Toute donnée utilisateur est traitée selon son scope réel de lecture/écriture/suppression.
+- Paiements, actions destructrices, uploads et outils IA suivent les garde-fous spécifiques de `SECURITY.md`.
 
-- **Toute nouvelle table → RLS activée + policies écrites avant la première lecture/écriture.**
-- **Toute donnée utilisateur → vérifier le scope (qui peut lire / écrire / supprimer).**
-- **Tout endpoint manipulant de l'argent → double validation côté serveur, idempotence, logs.**
-- Aucun secret en clair dans le code source ou les commits.
+## Design
 
----
+Routage :
 
-## Ce que tu ne fais jamais
+- UX/parcours → `FUNCTIONAL.md`, `WIREFRAMES.md`, `genesis-design` ;
+- direction artistique → `genesis-art-direction` ;
+- maquette/handoff → `genesis-design` ;
+- motion significative → `genesis-motion-design` ;
+- critique et QA visuelle → `genesis-design-critic` + `VISUAL-QA.md`.
 
-- Pas de `any` en TypeScript.
-- Pas de secrets ou clés API dans le code source.
-- Pas de `console.log` laissé en production.
-- Pas de librairie ajoutée sans la lister dans `ARCHITECTURE.md`.
-- Pas de table créée sans RLS.
-- Pas de refactoring hors scope de la story en cours.
-- Pas de story `[done]` rouverte — créer `ST-XXX-fix` à la place.
-- Pas de commit direct sur `main`.
-<!-- ajouter tes règles spécifiques ici -->
+Toujours appliquer **Composition before Components** et contrôler `docs/design/anti-ai-slop.md`. L'originalité ne prime jamais sur l'UX, l'accessibilité ou la maintenabilité.
 
----
+## Production et release
 
-## Langue & i18n
+- `docs/OPERATIONS.md` documente observabilité, données/restauration, analytics, performance, coûts et quotas.
+- `docs/RELEASE.md` est la procédure canonique de mise en production.
+- Une story `[done]` n'est pas une release : `/release` exécute le Quality Gate complet, la synchronisation documentaire, le déploiement, les smoke tests et la vérification post-déploiement.
 
-- **Communication agent ↔ développeur :** français.
-- **Code (variables, fonctions, fichiers) :** anglais (`camelCase`, `PascalCase`, `kebab-case`).
-- **Messages destinés à l'utilisateur final :** langue cible du produit (cf. `BRIEF.md`).
-- **Logs techniques, erreurs internes :** anglais.
-- **Commits, branches :** anglais.
-- **Documentation (`docs/`, ADR, JOURNAL) :** français.
+## Communication et code
 
----
+- Communication agent ↔ développeur : français.
+- Code, variables, fonctions, fichiers et logs techniques : anglais sauf convention contraire explicite.
+- Documentation produit/technique : français par défaut.
+- Expliquer brièvement les choix non évidents et signaler proactivement la dette ou le risque.
+- Toujours gérer les erreurs explicitement ; pas de `try/catch` vide.
+- Pour les appels tiers, prévoir timeout/retry/fallback seulement lorsqu'ils sont pertinents au comportement attendu.
 
-## Comportement attendu
+## Commandes
 
-### Routage design
+Les commandes `.claude/commands/` sont des **adaptateurs** ; elles ne sont jamais la source de vérité d'une checklist.
 
-- UX / parcours → `FUNCTIONAL.md`, `WIREFRAMES.md`, puis skill `genesis-design`.
-- Art direction / moodboard → `genesis-art-direction` et `visual-direction.md` avant Open Design.
-- Maquette → Open Design via `genesis-design` ; ne jamais lui envoyer directement un brief vague.
-- Motion significative → `genesis-motion-design`, sans dépendance automatique.
-- Implémentation UI → handoff `synced`, direction, design system et UI existante.
-- Critique UI → `genesis-design-critic` sur captures réelles et boucle de `VISUAL-QA.md`.
+- `/init` → `docs/KICKOFF.md`
+- `/design` → skills design + `docs/KICKOFF.md`
+- `/story` → charge le contexte de la story
+- `/ready` → Definition of Ready de ce fichier
+- `/done` → Definition of Done + `docs/QUALITY.md`
+- `/new-story` → crée une story
+- `/sync-doc` → audite la cohérence des sources
+- `/journal` → mémoire durable
+- `/release` → `docs/RELEASE.md`
 
-Avant une vue ou un composant important, relire direction, design system, principes et UI existante. **Composition before Components** ; contrôler `docs/design/anti-ai-slop.md`. L’originalité ne prime jamais sur l’UX ou l’accessibilité.
-
-### Communication
-
-- Répondre en français.
-- Expliquer brièvement les choix non-évidents, sans justifier chaque ligne.
-- Si une tâche est ambiguë, proposer une interprétation et demander confirmation plutôt que de bloquer.
-- Signaler proactivement si une implémentation risque de créer une dette technique.
-
-### Style de code
-
-<!-- Pointeurs vers ARCHITECTURE.md — ne pas dupliquer les conventions ici. -->
-
-Appliquer les conventions définies dans `ARCHITECTURE.md` section 4.
-En cas de doute sur un pattern, choisir la solution la plus lisible et la plus proche du reste de la codebase.
-
-### Gestion des erreurs
-
-- Toujours gérer les cas d'erreur explicitement — pas de `try/catch` vide.
-- Les messages d'erreur utilisateur sont dans la langue cible, les logs techniques en anglais.
-- Pour les appels API tiers : timeout, retry, et fallback si pertinent.
-
----
-
-## Commandes slash (Claude Code)
-
-<!-- Commandes personnalisées dans .claude/commands/. -->
-<!-- Pour Cursor, ces actions peuvent être déclenchées en demandant à l'agent directement. -->
-
-- `/init`       — orchestre le workflow d'initialisation d'un nouveau projet (cf. `docs/KICKOFF.md`)
-- `/design`     — conçoit ou met à jour un module avec un atelier optionnel et synchronise son handoff
-- `/story`      — affiche la story `[wip]` ou `[todo]` suivante avec son contexte complet
-- `/ready`      — vérifie la Definition of Ready pour la prochaine story `[todo]`
-- `/done`       — vérifie la Definition of Done et marque la story `[wip]` comme `[done]`
-- `/new-story`  — guide la création d'une nouvelle story dans `docs/stories/`
-- `/sync-doc`   — audite la cohérence entre code et documentation
-- `/journal`    — ajoute une entrée dans `JOURNAL.md` à la fin d'une session
-
-Pour Codex et les agents compatibles avec les skills de dépôt, le workflow UX/UI équivalent se trouve dans `.agents/skills/genesis-design/SKILL.md`. Les commandes Claude ne sont que des adaptateurs : les documents Markdown restent canoniques.
-
----
+Pour Codex et les agents compatibles, le skill `.agents/skills/genesis-workflow/` route le cycle général et les skills `genesis-*design*` couvrent la chaîne UX/UI.
 
 ## Scripts utilitaires
 
-<!-- Cross-platform Node.js. Documentation : scripts/README.md. -->
+- `node scripts/new-story.mjs`
+- `node scripts/archive-stories.mjs`
+- `node scripts/archive-mockups.mjs`
 
-- `node scripts/new-story.mjs` — création interactive d'une story (ID auto, fichier + index).
-- `node scripts/archive-stories.mjs` — déplace les stories `[done]` vers `docs/stories/done/`.
-- `node scripts/archive-mockups.mjs` — archive les pré-maquettes `src/playground/` vers `docs/assets/playground-archive/` (à lancer en fin de MVP).
-
-**L'agent peut utiliser ces scripts** au lieu de manipuler les fichiers à la main. C'est plus sûr et reproductible.
-
----
-
-## Structure du repo (rappel)
-
-```
-/
-├── AGENTS.md           → ce fichier (source de vérité agent)
-├── CLAUDE.md           → import vers AGENTS.md (compat Claude Code)
-├── .claude/
-│   └── commands/       → slash commands Claude Code
-├── .agents/skills/
-│   ├── genesis-design/          → orchestration UX/UI et Open Design
-│   ├── genesis-art-direction/   → thesis et références
-│   ├── genesis-design-critic/   → scoring et corrections
-│   └── genesis-motion-design/   → motion intentionnelle
-├── docs/
-│   ├── BRIEF.md
-│   ├── FUNCTIONAL.md
-│   ├── ARCHITECTURE.md
-│   ├── SECURITY.md
-│   ├── WIREFRAMES.md
-│   ├── DESIGN.md
-│   ├── design/          → briefs de modules et handoffs agnostiques
-│   ├── VISUAL-QA.md     → boucle navigateur, captures, revue et corrections
-│   ├── KICKOFF.md      → workflow d'initialisation projet (utilisé par /init)
-│   ├── STORIES.md      → index du backlog
-│   ├── stories/        → un fichier par story
-│   │   └── done/       → stories archivées (déplacées par archive-stories.mjs)
-│   ├── JOURNAL.md      → mémoire entre sessions
-│   └── assets/         → maquettes, exports
-│       └── playground-archive/  → pré-maquettes archivées (déplacées par archive-mockups.mjs)
-├── scripts/            → utilitaires Node.js (new-story, archive-stories, archive-mockups)
-├── src/                → code frontend
-│   └── playground/     → pré-maquettes en code (éphémère, archivé en fin de MVP)
-└── server/             → code backend / API
-```
+Utiliser ces scripts lorsqu'ils réduisent les manipulations manuelles et restent compatibles avec l'environnement d'exécution.
