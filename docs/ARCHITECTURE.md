@@ -32,6 +32,12 @@
 **Error tracking :**
 **Autres :**
 
+### Tests
+
+**Framework unit :**
+**Framework E2E / intégration :**
+**Couverture cible :** <!-- pas de % arbitraire par défaut -->
+
 ### Infra & déploiement
 
 **Hébergement :**
@@ -40,32 +46,6 @@
 **Environnements :** <!-- local / preview / staging / production -->
 **URL production :**
 **Budget infra :**
-
-Le détail de mise en production vit dans `docs/RELEASE.md` et l'exploitation dans `docs/OPERATIONS.md`.
-
-## 2. Commandes projet et Quality Gate
-
-<!-- Référence exécutée par docs/QUALITY.md. Utiliser "non applicable — raison" si nécessaire. -->
-
-**Installation :**
-**Développement :**
-**Lint / format check :**
-**Typecheck / analyse statique :**
-**Tests unitaires :**
-**Tests E2E / intégration :**
-**Build production :**
-**Audit dépendances / sécurité :**
-
-### Environnement de test
-
-**Données / seeds :**
-**BDD / services isolés :**
-**Comptes de test :**
-**Parcours critiques :**
-
-Aucune commande n'est imposée par Genesis : elle doit correspondre à la stack réellement choisie.
-
-## 3. Design preview et Visual QA
 
 ### Design preview
 
@@ -86,7 +66,7 @@ Aucune commande n'est imposée par Genesis : elle doit correspondre à la stack 
 
 Un atelier de design peut être indisponible ou soumis à quota. Le projet doit rester implémentable avec les contrats Git, la preview de la stack et les handoffs locaux.
 
-## 4. Structure du projet
+## 2. Structure du projet
 
 <!-- Adapter à la stack ; ne pas conserver des dossiers fictifs après bootstrap. -->
 
@@ -104,7 +84,7 @@ Un atelier de design peut être indisponible ou soumis à quota. Le projet doit 
 
 Le dossier de preview/playground est éphémère et doit être documenté si utilisé.
 
-## 5. Modèle de données
+## 3. Schéma / modèle de données
 
 <!-- Décrire ici les entités techniques, schémas, relations, migrations et conventions. -->
 
@@ -121,7 +101,7 @@ Le dossier de preview/playground est éphémère et doit être documenté si uti
 
 Si PostgreSQL/Supabase avec RLS est choisi, documenter les policies attendues. Sinon, décrire le contrôle d'autorisation équivalent conformément à `docs/SECURITY.md`.
 
-## 6. Conventions de code
+## 4. Conventions de code
 
 ### Nommage
 
@@ -143,7 +123,7 @@ Si PostgreSQL/Supabase avec RLS est choisi, documenter les policies attendues. S
 
 Ne jamais ajouter une dépendance structurante sans l'inscrire ici ou dans un ADR.
 
-## 7. Tests
+## 5. Tests
 
 ### Stratégie
 
@@ -162,19 +142,22 @@ Ne jamais ajouter une dépendance structurante sans l'inscrire ici ou dans un AD
 
 Toute story liste les tests qu'elle ajoute ou modifie.
 
-## 8. Workflow Git et versioning
+## 6. Workflow Git
 
 **Branche principale :** `main`
 **Convention branches stories :** `st-XXX-slug-court`
 **Convention commits :** `[ST-XXX] description courte`
 **Stratégie merge :**
 **Protection de branche :**
+
+### Tags / versioning
+
 **Versioning :** semver / autre
-**Tags :**
+**Convention tags :**
 
 Une release correspond à un état déployable validé par `docs/RELEASE.md`, pas seulement à une story terminée.
 
-## 9. Langue & i18n
+## 7. Langue & i18n
 
 **Langue du code :** anglais par défaut
 **Langue documentation :** français par défaut
@@ -183,7 +166,7 @@ Une release correspond à un état déployable validé par `docs/RELEASE.md`, pa
 **Stockage traductions :**
 **Fallback :**
 
-## 10. Décisions techniques — ADR
+## 8. Décisions techniques — ADR
 
 ### ADR-001 — [Titre]
 
@@ -196,7 +179,7 @@ Une release correspond à un état déployable validé par `docs/RELEASE.md`, pa
 
 Ajouter un ADR pour les décisions dont le pourquoi sera utile lors d'un futur changement.
 
-## 11. Variables d'environnement
+## 9. Variables d'environnement
 
 <!-- Liste exhaustive sans valeurs secrètes. Doit rester synchronisée avec .env.example. -->
 
@@ -205,7 +188,36 @@ APP_URL=
 # [NOM_VAR]=
 ```
 
-Pour chaque variable sensible, préciser implicitement par son usage si elle est client-safe ou strictement serveur ; ne jamais déduire la sécurité d'un nom de variable seul.
+Pour chaque variable sensible, préciser par son usage si elle est client-safe ou strictement serveur ; ne jamais déduire la sécurité d'un nom seul.
+
+## 10. Points d'attention
+
+<!-- Risques, dettes et sujets techniques à surveiller. -->
+
+-
+-
+
+## 11. Commandes projet et Quality Gate
+
+<!-- Référence exécutée par docs/QUALITY.md. Utiliser "non applicable — raison" si nécessaire. -->
+
+**Installation :**
+**Développement :**
+**Lint / format check :**
+**Typecheck / analyse statique :**
+**Tests unitaires :**
+**Tests E2E / intégration :**
+**Build production :**
+**Audit dépendances / sécurité :**
+
+### Environnement de test
+
+**Données / seeds :**
+**BDD / services isolés :**
+**Comptes de test :**
+**Parcours critiques :**
+
+Aucune commande n'est imposée par Genesis : elle doit correspondre à la stack réellement choisie.
 
 ## 12. Production readiness
 
@@ -219,9 +231,13 @@ Référence : `docs/OPERATIONS.md`.
 **Performance :**
 **Coûts / quotas critiques :**
 
-Les décisions détaillées restent dans `OPERATIONS.md`; cette section indique seulement les mécanismes techniques retenus.
+Les décisions détaillées restent dans `OPERATIONS.md`; cette section indique les mécanismes techniques retenus.
 
-## 13. Points d'attention
+## 13. Release
 
-- 
-- 
+Référence : `docs/RELEASE.md`.
+
+**Mécanisme de déploiement :**
+**Smoke tests :**
+**Rollback / roll-forward :**
+**Notes de release :**
