@@ -1,69 +1,60 @@
 # /sync-doc
 
-Audite la cohérence entre code et documentation.
+Audite la cohérence entre le code et les contrats canoniques du projet.
 
 ## Instructions
 
-1. **Stack vs dépendances**
-   - Lire `docs/ARCHITECTURE.md` section 1 (stack).
-   - Comparer avec `package.json` / `pubspec.yaml` / équivalent.
-   - Signaler toute dépendance présente dans le code mais absente de `ARCHITECTURE.md`.
-   - Signaler toute dépendance listée mais non utilisée.
+1. **Stack et dépendances**
+   - Comparer `ARCHITECTURE.md` aux manifests réels (`package.json`, `pubspec.yaml`, etc.).
+   - Signaler les dépendances utilisées mais non documentées et les dépendances documentées devenues inutiles.
 
-2. **Structure**
-   - Lire `docs/ARCHITECTURE.md` section 2 (structure).
-   - Vérifier que l'arborescence réelle correspond.
-   - Signaler les dossiers présents mais non documentés (et inversement).
+2. **Structure et schéma**
+   - Comparer l'arborescence réelle à `ARCHITECTURE.md`.
+   - Comparer le schéma documenté aux migrations ou définitions réellement utilisées.
 
-3. **Schéma BDD**
-   - Lire `docs/ARCHITECTURE.md` section 3.
-   - Comparer avec les fichiers de migration (`server/db/migrations/` ou équivalent).
-   - Signaler toute table existante non documentée.
-   - Signaler tout champ documenté mais absent du schéma.
+3. **Sécurité et autorisation**
+   - Lire `SECURITY.md` et vérifier le mécanisme d'autorisation déclaré par la stack.
+   - Si la stack utilise PostgreSQL/Supabase ou un moteur avec RLS équivalente, vérifier les policies attendues.
+   - Si la stack ne supporte pas RLS, vérifier que l'autorisation côté serveur et les contrôles d'accès équivalents sont documentés et appliqués.
+   - Toute donnée utilisateur accessible sans contrôle d'autorisation attendu est **bloquante**.
 
-4. **Sécurité / RLS**
-   - Lire `docs/SECURITY.md` section 3.
-   - Vérifier que chaque table du schéma BDD a RLS activée et au moins une policy.
-   - Signaler toute table sans RLS comme **incohérence bloquante**.
+4. **Stories et modules**
+   - Vérifier que chaque module MVP possède des stories cohérentes.
+   - Vérifier que chaque ID de `STORIES.md` possède un fichier et qu'aucun fichier story n'est orphelin.
+   - Vérifier les dépendances entre stories et signaler les cycles ou références inexistantes.
 
-5. **Stories vs modules**
-   - Lire `docs/FUNCTIONAL.md` (modules) et `docs/STORIES.md` (backlog).
-   - Vérifier que chaque module `[MVP]` a au moins une story associée.
-   - Signaler les modules sans story (à découper) et les stories sans module rattaché.
+5. **UX/UI et handoffs**
+   - Vérifier que chaque écran référencé par une story existe dans `WIREFRAMES.md`.
+   - Vérifier la cohérence des statuts entre wireframes et handoffs.
+   - Vérifier que chaque écran `approved`, `synced` ou `implemented` possède les preuves attendues par le workflow design.
+   - Vérifier que les composants/tokens utilisés existent dans `DESIGN.md`.
+   - Pour un écran `implemented`, vérifier que la revue de `VISUAL-QA.md` est renseignée.
 
-6. **Stories vs fichiers**
-   - Lister `docs/stories/ST-*.md` et `docs/stories/done/ST-*.md`.
-   - Vérifier que chaque ID listé dans `STORIES.md` a un fichier correspondant.
-   - Vérifier qu'aucun fichier story n'est orphelin (présent mais absent de l'index).
-   - Si `docs/stories/` contient plus de **15** stories `[done]`, suggérer de lancer `node scripts/archive-stories.mjs`.
+6. **Preview et playground**
+   - Vérifier que la preview réelle correspond au mécanisme déclaré dans `ARCHITECTURE.md`.
+   - Signaler les previews/playgrounds orphelins ou devenus obsolètes.
 
-7. **Wireframes vs écrans référencés**
-   - Lire les champs `Écrans :` de chaque story dans `docs/stories/*.md`.
-   - Vérifier que chaque ID d'écran cité (S01, S02, …) existe dans `docs/WIREFRAMES.md` (section H3 dédiée).
-   - Signaler les écrans cités sans section dédiée et les sections d'écran orphelines (jamais référencées par une story).
+7. **Variables d'environnement**
+   - Comparer la liste de `ARCHITECTURE.md` à `.env.example`.
+   - Signaler toute variable manquante d'un côté ou de l'autre.
 
-8. **Playground vs wireframes**
-   - Lister `src/playground/*.{vue,jsx,tsx,svelte,html}` si le dossier existe.
-   - Pour chaque fichier, vérifier qu'il est référencé dans `WIREFRAMES.md` (champ "Maquette playground").
-   - Signaler les fichiers playground orphelins (présents mais non référencés).
-   - Si toutes les maquettes playground ont le statut `portée` dans `WIREFRAMES.md`, suggérer de lancer `node scripts/archive-mockups.mjs`.
+8. **Quality Gate**
+   - Lire `docs/QUALITY.md`.
+   - Vérifier que les commandes applicables (lint, typecheck/analyse statique, tests, E2E, build, audit) sont déclarées dans `ARCHITECTURE.md` ou explicitement marquées non applicables avec justification.
 
+9. **Production readiness**
+   - Lire `docs/OPERATIONS.md`.
+   - Avant un lancement public, signaler toute décision structurante encore vide : diagnostic erreurs, logs, backup/restauration pour données non reproductibles, coûts/quotas et analytics si nécessaires au succès produit.
 
-9. **Design et handoffs**
-   - Vérifier que chaque écran `approved`, `synced` ou `implemented` possède un handoff local.
-   - Vérifier la cohérence des statuts et versions entre `WIREFRAMES.md` et `docs/design/screens/`.
-   - Signaler les briefs obsolètes par rapport à leurs sources et les handoffs sans référence ou recette.
-   - Signaler les composants et tokens utilisés par les handoffs mais absents de `DESIGN.md`.
-   - Vérifier que la preview réelle correspond à la section « Design preview » de `ARCHITECTURE.md`.
-   - Pour les écrans `implemented`, vérifier que la revue `VISUAL-QA.md` est renseignée dans le handoff.
-   - Vérifier que commandes, URL et dossier de captures de Visual QA sont renseignés dans `ARCHITECTURE.md` avant la première story UI.
-
-10. **Variables d'environnement**
-   - Lire `docs/ARCHITECTURE.md` section 9.
-   - Comparer avec `.env.example`.
-   - Signaler les variables manquantes des deux côtés.
+10. **Release**
+   - Vérifier que le mécanisme de déploiement documenté dans `ARCHITECTURE.md` est compatible avec `docs/RELEASE.md`.
+   - Signaler l'absence de smoke tests ou de stratégie de rollback/roll-forward lorsqu'une release comporte des changements risqués.
 
 11. Produire un rapport court :
-    - ✅ Points cohérents
-    - ⚠️ Divergences détectées (avec suggestion de correction)
-    - ❌ Incohérences bloquantes à corriger avant de continuer (notamment RLS manquantes)
+   - ✅ cohérent ;
+   - ⚠️ divergence avec correction proposée ;
+   - ❌ bloqueur à corriger avant de continuer.
+
+## Règle anti-dérive
+
+`/sync-doc` compare les sources canoniques ; il ne doit pas réinventer leurs règles ni rendre obligatoire un outil spécifique à une stack.
