@@ -1,7 +1,7 @@
-# Recette Claude Design — SXX — [Écran]
+# Recette de conception — SXX — [Écran]
 
 **Date :** YYYY-MM-DD
-**Outil / mode :** Claude Design / [mode]
+**Outil / mode :** [outil ou agent] / [mode]
 **Brief source :** `docs/design/modules/[module].md`
 **Version de DESIGN.md :**
 **Plateforme et viewport :**

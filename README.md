@@ -2,8 +2,8 @@
 
 > Template de démarrage de projet SaaS — structure documentaire et configuration agent pour développement assisté par IA.
 
-**Version :** `v0.5.0`
-**Compatible avec :** Cursor, Claude Code (et tout agent qui lit `AGENTS.md` ou `CLAUDE.md` à la racine).
+**Version :** `v0.6.0`
+**Compatible avec :** Codex/ChatGPT Cloud, Open Design, Claude Code, Cursor et tout agent capable de lire les contrats Markdown du dépôt.
 
 ---
 
@@ -19,7 +19,7 @@ Une story à la fois, traçable, testée, sécurisée. Le développeur reste le 
 ### TL;DR
 
 1. Clone Genesis comme base, renomme, init un nouveau repo Git.
-2. Ouvre le projet dans Cursor ou Claude Code.
+2. Ouvre le projet dans ton agent local ou cloud.
 3. Lance la commande `/init` (ou demande à l'agent : "démarre le workflow d'initialisation").
 4. Laisse-toi guider par les **4 phases de conception**, puis par le développement, ci-dessous. Compte ~1 h pour spécifier un projet de bout en bout.
 
@@ -35,7 +35,7 @@ Phase 2 — Fonctionnel, architecture et sécurité
 Phase 3 — Fondations UX/UI
    ↓ [Gate design : DESIGN.md validé]
 Phase 4 — Conception par module
-   brief → Claude Design → validation → handoff → stories
+   brief → atelier optionnel → validation → handoff → stories
    ↓ [Gate module]
 Développement story par story : /story → /ready → /done
 ```
@@ -75,9 +75,16 @@ La phase 3 fixe dans `DESIGN.md` les plateformes, principes UX, tokens, composan
 Pour chaque module MVP, dans l'ordre :
 
 1. **Brief** : `/design [module]` prépare le parcours, les écrans, états et contraintes.
-2. **Claude Design** : structure basse fidélité, deux ou trois directions au maximum, correction groupée et prototype interactif.
-3. **Handoff** : la variante validée est synchronisée sous `docs/design/screens/SXX/`. Le dépôt conserve les décisions nécessaires à Claude Code, même si Claude Design ou son quota est indisponible.
+2. **Atelier interchangeable** : Open Design si disponible, sinon Codex dans la preview de la stack ou un autre outil ; structure basse fidélité puis deux ou trois directions au maximum.
+3. **Handoff Git** : la variante validée est synchronisée sous `docs/design/screens/SXX/`. Les décisions restent exploitables sans l’atelier qui les a produites.
 4. **Stories** : découpage via `node scripts/new-story.mjs`, puis Gate module.
+
+Après implémentation, la procédure [`docs/VISUAL-QA.md`](docs/VISUAL-QA.md) boucle sur navigateur, captures, revue des écarts et corrections. Playwright est recommandé uniquement lorsqu’il fait partie de la stack : Genesis n’impose aucune infrastructure de snapshots.
+
+### Open Design ou cloud
+
+- **Avec Open Design** : transmettre le brief du module, `DESIGN.md`, les sections d’écran et les contraintes de stack ; explorer puis restituer chaque écran dans le handoff standard. Les exports restent secondaires et remplaçables.
+- **Avec Codex Cloud seul** : le skill `.agents/skills/genesis-design/` suit exactement les mêmes gates, génère la preview dans le vrai framework et utilise le navigateur cloud pour la Visual QA. Aucun repository local ni format propriétaire n’est requis.
 
 **Avantage de l'itération par module** : tu peux préparer les wireframes du module 2 pendant que tu codes le module 1.
 
@@ -116,6 +123,8 @@ Le workflow `/init` est une orchestration — rien ne t'empêche de remplir les 
 │       ├── new-story.md
 │       ├── sync-doc.md
 │       └── journal.md
+├── .agents/skills/
+│   └── genesis-design/  # workflow UX/UI portable pour agents compatibles
 ├── docs/
 │   ├── BRIEF.md          # boussole du projet
 │   ├── FUNCTIONAL.md     # spécifications fonctionnelles
@@ -123,7 +132,8 @@ Le workflow `/init` est une orchestration — rien ne t'empêche de remplir les 
 │   ├── SECURITY.md       # règles de sécurité transverses
 │   ├── DESIGN.md         # système visuel global et composants
 │   ├── WIREFRAMES.md     # spécifications des écrans
-│   ├── design/           # briefs et handoffs Claude Design
+│   ├── VISUAL-QA.md      # boucle navigateur, captures et corrections
+│   ├── design/           # briefs et handoffs agnostiques
 │   ├── KICKOFF.md        # workflow d'initialisation (utilisé par /init)
 │   ├── STORIES.md        # index du backlog
 │   ├── stories/          # un fichier par story
@@ -183,7 +193,7 @@ Disponibles dans `.claude/commands/`. Pour Cursor, demander la même action à l
 | Commande      | Effet |
 |---------------|-------|
 | `/init`       | Orchestre le workflow d'initialisation d'un nouveau projet |
-| `/design`     | Conçoit un module avec Claude Design et synchronise son handoff |
+| `/design`     | Conçoit un module avec l’atelier de design choisi et synchronise son handoff |
 | `/story`      | Affiche la story `[wip]` ou la prochaine `[todo]` avec tout le contexte |
 | `/ready`      | Vérifie la Definition of Ready avant de démarrer une story (inclut l'arbitrage wireframe) |
 | `/done`       | Vérifie la Definition of Done et marque la story `[done]` |
@@ -194,6 +204,12 @@ Disponibles dans `.claude/commands/`. Pour Cursor, demander la même action à l
 ---
 
 ## Changelog
+
+### v0.6.0 — 2026-08-18
+
+- Rend les ateliers de design interchangeables ; Open Design devient une amélioration optionnelle.
+- Ajoute le skill portable `genesis-design` et une procédure de Visual QA compatible local/cloud.
+- Renforce `DESIGN.md` et les handoffs avec l’interopérabilité, les viewports et la recette de validation.
 
 ### v0.5.0 — 2026-08-13
 

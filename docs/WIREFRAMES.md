@@ -72,7 +72,7 @@ Les principes UX, tokens, règles d'accessibilité et composants partagés sont 
 
 #### Prompt maquette
 
-<!-- Recette utilisée avec Claude Design, ou l'outil de fallback choisi. -->
+<!-- Recette utilisée avec l’atelier de design choisi, ou l'outil de fallback choisi. -->
 <!-- Garder le prompt exact pour pouvoir régénérer ou faire évoluer. -->
 <!-- Si pas encore généré, écrire le prompt ici avant de le soumettre. -->
 
@@ -81,10 +81,10 @@ Les principes UX, tokens, règles d'accessibilité et composants partagés sont 
 
 #### Lien / asset
 
-<!-- Prototype Claude Design ou outil de fallback. -->
+<!-- Prototype de l’atelier choisi ou preview de la stack. -->
 <!-- Pour les outils sans lien public natif : exporter l'image dans docs/assets/. -->
 
-- Outil : Claude Design <!-- chemin privilégié ; autre outil possible en fallback -->
+- Outil : <!-- Open Design / Codex / autre / preview de la stack -->
 - Lien / identifiant :
 - Version approuvée :
 - Statut : <!-- draft / review / approved / synced / implemented / obsolete -->

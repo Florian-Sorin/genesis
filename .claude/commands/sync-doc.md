@@ -55,6 +55,8 @@ Audite la cohérence entre code et documentation.
    - Signaler les briefs obsolètes par rapport à leurs sources et les handoffs sans référence ou recette.
    - Signaler les composants et tokens utilisés par les handoffs mais absents de `DESIGN.md`.
    - Vérifier que la preview réelle correspond à la section « Design preview » de `ARCHITECTURE.md`.
+   - Pour les écrans `implemented`, vérifier que la revue `VISUAL-QA.md` est renseignée dans le handoff.
+   - Vérifier que commandes, URL et dossier de captures de Visual QA sont renseignés dans `ARCHITECTURE.md` avant la première story UI.
 
 10. **Variables d'environnement**
    - Lire `docs/ARCHITECTURE.md` section 9.

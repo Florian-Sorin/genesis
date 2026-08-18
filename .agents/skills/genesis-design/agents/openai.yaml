@@ -1,0 +1,4 @@
+interface:
+  display_name: "Genesis Design"
+  short_description: "Concevoir et valider l’UX/UI versionnée d’un projet Genesis"
+  default_prompt: "Conçois le prochain module UI avec le workflow Genesis, synchronise son handoff puis prépare sa validation visuelle."

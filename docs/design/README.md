@@ -1,6 +1,6 @@
 # Handoff design
 
-Ce dossier contient le contexte et les livrables qui relient la conception dans Claude Design à l'implémentation dans le dépôt. Claude Design est le chemin privilégié, mais aucun choix nécessaire à l'implémentation ne doit vivre uniquement dans l'outil externe.
+Ce dossier contient le contexte et les livrables qui relient la conception dans l’atelier de design choisi à l'implémentation dans le dépôt. Open Design est un chemin conseillé, mais aucun choix nécessaire à l'implémentation ne doit vivre uniquement dans l'outil externe.
 
 ## Structure
 
@@ -22,7 +22,7 @@ docs/design/
 
 `draft` → `review` → `approved` → `synced` → `implemented`. Le statut `obsolete` retire un écran du workflow sans effacer son historique.
 
-- **approved** : variante explicitement validée par le développeur dans Claude Design.
+- **approved** : variante explicitement validée par le développeur dans l’atelier de design choisi.
 - **synced** : handoff local complet et cohérent avec la variante approuvée.
 - **implemented** : revue visuelle et comportementale terminée dans la stack cible.
 
@@ -36,4 +36,4 @@ docs/design/
 
 ## Mode dégradé
 
-Si Claude Design est indisponible, utiliser le même brief et le même handoff avec des captures exportées et la preview déclarée dans `ARCHITECTURE.md`. Le workflow ne doit jamais être bloqué par le quota d'un outil externe.
+Si Open Design ou l’atelier choisi est indisponible, utiliser le même brief et le même handoff avec Codex Cloud, des captures et la preview déclarée dans `ARCHITECTURE.md`. Le workflow ne doit jamais être bloqué par un outil externe.

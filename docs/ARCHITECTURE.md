@@ -56,11 +56,19 @@
 **Données fictives :**
 **Procédure de portage :**
 
-Le code exporté par Claude Design reste généré et remplaçable tant qu'il n'a pas été porté et relu selon les conventions du projet.
+### Visual QA
+
+**Commande de démarrage :**
+**URL de base :**
+**Commande de capture / E2E :** <!-- Playwright si déjà retenu, sinon navigateur disponible -->
+**Navigateurs disponibles :**
+**Captures temporaires :** <!-- dossier ignoré par Git -->
+
+Le code exporté par un atelier de design reste généré et remplaçable tant qu'il n'a pas été porté et relu selon les conventions du projet.
 
 ### Risques outils de design
 
-Claude Design partage son quota avec les autres usages Claude. Le workflow doit rester utilisable avec `DESIGN.md`, `WIREFRAMES.md`, les handoffs locaux et la preview de la stack lorsque l'outil est indisponible.
+Un atelier externe peut être local, indisponible ou soumis à quota. Le workflow doit rester utilisable avec `DESIGN.md`, `WIREFRAMES.md`, les handoffs locaux et la preview de la stack lorsque l'outil est indisponible.
 
 ---
 
