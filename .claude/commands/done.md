@@ -1,27 +1,30 @@
 # /done
 
-Vérifie la **Definition of Done** et marque la story `[wip]` comme `[done]`.
+Vérifie une story `[wip]` puis la marque `[done]` si tous les contrats applicables sont satisfaits.
+
+> **Sources canoniques :**
+> - Definition of Done : `AGENTS.md`
+> - Quality Gate technique : `docs/QUALITY.md`
+> - Visual QA UI : `docs/VISUAL-QA.md`
+
+Cette commande exécute ces contrats ; elle ne maintient aucune checklist parallèle.
 
 ## Instructions
 
-1. Lire `docs/STORIES.md` et identifier la story en `[wip]`.
-2. Ouvrir `docs/stories/ST-XXX-*.md` correspondant.
-3. Vérifier la Definition of Done (cf. `AGENTS.md`) :
-   - [ ] Toutes les tâches techniques cochées `[x]`
-   - [ ] Tous les critères de done cochés `[x]`
-   - [ ] Tests E2E et unitaires listés implémentés et passants
-   - [ ] Pas de `console.log` ou code commenté laissé
-   - [ ] `FUNCTIONAL.md` à jour si règle métier modifiée
-   - [ ] `ARCHITECTURE.md` à jour si décision technique prise (ADR)
-   - [ ] `SECURITY.md` à jour si l'impact sécurité a évolué
-   - [ ] Pour une story UI : boucle `docs/VISUAL-QA.md` effectuée aux tailles cibles
-   - [ ] Les écarts intentionnels sont documentés et les écrans sont `implemented`
-   - [ ] `DESIGN.md` est à jour si un composant ou token a évolué
-4. Si un critère n'est pas satisfait : lister précisément ce qui manque et s'arrêter.
-5. Si tout est satisfait :
-   - Passer le statut `[wip]` → `[done]` dans le fichier de story.
-   - Ajouter dans la section "Historique" : `YYYY-MM-DD — [done] — Terminée`.
-   - Mettre à jour `docs/STORIES.md` : déplacer la ligne du backlog MVP vers la section "Stories terminées".
-6. Proposer une entrée de journal (cf. `/journal`) si quelque chose de notable a été appris.
-7. Rappeler la commande Git pour merger : `git checkout main && git merge --ff-only st-XXX-slug && git branch -d st-XXX-slug`.
-8. Afficher la prochaine story `[todo]` pour préparer la session suivante.
+1. Lire `docs/STORIES.md` et identifier l'unique story `[wip]`.
+2. Ouvrir son fichier `docs/stories/ST-XXX-*.md`.
+3. Lire la **Definition of Done** dans `AGENTS.md` et vérifier chaque critère.
+4. Lire `docs/QUALITY.md` et exécuter le **Gate story** avec les commandes déclarées dans `ARCHITECTURE.md`.
+5. Si la story touche une interface, exécuter la boucle de `docs/VISUAL-QA.md` et vérifier que les écrans concernés sont `implemented`.
+6. Vérifier que les sources canoniques ont été mises à jour lorsque nécessaire : `FUNCTIONAL.md`, `ARCHITECTURE.md`, `SECURITY.md`, `DESIGN.md`, wireframes/handoffs et `.env.example`.
+7. Si un critère ou une commande applicable échoue, lister précisément le bloqueur et s'arrêter. Ne pas marquer `[done]` avec un check non exécuté présenté comme vert.
+8. Si tout est satisfait :
+   - passer la story `[wip]` → `[done]` dans son fichier ;
+   - ajouter l'entrée d'historique datée ;
+   - mettre à jour `docs/STORIES.md` selon sa convention canonique.
+9. Proposer une entrée dans `JOURNAL.md` uniquement pour un apprentissage durable.
+10. Indiquer la prochaine story `[todo]` et rappeler que le merge suit le workflow Git défini dans `AGENTS.md` / `ARCHITECTURE.md`.
+
+## Règle anti-dérive
+
+Toute évolution de la Definition of Done ou des contrôles techniques se fait dans `AGENTS.md` ou `docs/QUALITY.md`, jamais dans cette commande.
