@@ -18,6 +18,7 @@ out/
 
 # Environnement & secrets
 .env
+.visual-qa/
 .env.local
 .env.*.local
 .env.development

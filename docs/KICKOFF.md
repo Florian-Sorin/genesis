@@ -33,7 +33,7 @@ Phase 3 — Fondations UX/UI                     (15-30 min, dev + agent)
 Phase 4 — Itération par module fonctionnel     (variable, dev + agent)
    pour chaque module MVP, dans l'ordre :
      4a. Brief et écrans                       (docs/design/ + WIREFRAMES.md)
-     4b. Exploration et prototype              (Claude Design par défaut)
+     4b. Exploration et prototype              (atelier optionnel)
      4c. Validation et handoff                 (docs/design/screens/)
      4d. Stories du module                     (STORIES.md + docs/stories/ST-XXX-*.md)
      ↓ [gate module : handoff et stories validés]
@@ -162,11 +162,11 @@ Validation explicite : résumé du dev de chaque fichier + "go" final.
 
 ## Phase 3 — Fondations UX/UI
 
-**Objectif :** donner à Claude Design et aux agents une référence visuelle globale avant de produire des écrans.
+**Objectif :** donner à tout atelier ou agent une référence visuelle globale avant de produire des écrans.
 
 1. Remplir `DESIGN.md` : principes UX, plateformes et conventions natives, direction visuelle, références et anti-références, accessibilité, tokens et premières familles de composants.
 2. Déclarer dans `ARCHITECTURE.md` le mécanisme de preview propre à la stack cible.
-3. Importer ou reproduire le système approuvé dans Claude Design et noter sa version dans `DESIGN.md`.
+3. Importer ou reproduire le système approuvé dans l’atelier de design choisi et noter sa version dans `DESIGN.md`.
 4. Ne pas concevoir tout le MVP : seules les fondations transverses sont figées ici.
 
 ### Gate design
@@ -176,7 +176,7 @@ Validation explicite : résumé du dev de chaque fichier + "go" final.
 - [ ] Accessibilité cible et contraintes adaptatives renseignées.
 - [ ] Tokens de base et composants structurants suffisamment définis pour concevoir le premier module.
 - [ ] Mécanisme de preview documenté dans `ARCHITECTURE.md`.
-- [ ] Système importé dans Claude Design, ou fallback explicitement choisi.
+- [ ] Système importé dans l’atelier de design choisi, ou fallback explicitement choisi.
 
 Validation explicite : le dev valide les fondations avant la conception détaillée du premier module.
 
@@ -193,11 +193,11 @@ Validation explicite : le dev valide les fondations avant la conception détaill
 3. Lister les écrans dans `WIREFRAMES.md` avec route, accès, contenu, actions et états.
 4. Valider le parcours et l'inventaire avant toute génération coûteuse.
 
-### 4b. Exploration dans Claude Design
+### 4b. Exploration dans l’atelier de design choisi
 
-Claude Design est l'atelier privilégié pour les wireframes, variantes et prototypes interactifs. Le dépôt reste la source durable des décisions nécessaires à l'implémentation.
+Open Design peut accélérer les wireframes, variantes et prototypes interactifs, mais reste optionnel. Codex Cloud ou un autre agent peut travailler directement dans la preview de la stack. Le dépôt reste la source durable des décisions nécessaires à l'implémentation.
 
-Cycle nominal pour maîtriser le quota partagé :
+Cycle nominal pour maîtriser le coût et le nombre d’itérations :
 
 1. Une passe basse fidélité sur la structure et le parcours.
 2. Deux ou trois directions visuelles au maximum.
@@ -205,7 +205,7 @@ Cycle nominal pour maîtriser le quota partagé :
 4. Une correction groupée par catégories : structure, contenu, hiérarchie, composants, adaptation et accessibilité.
 5. Une passe finale couvrant états et interactions.
 
-Ne jamais lancer l'exploration sans brief validé. Si Claude Design est indisponible, utiliser les mêmes documents avec une capture et la preview de la stack cible.
+Ne jamais lancer l'exploration sans brief validé. Si l’atelier choisi est indisponible, utiliser les mêmes documents avec une capture et la preview de la stack cible.
 
 ### 4c. Validation et synchronisation
 
@@ -245,6 +245,8 @@ Si KO → l'agent signale ce qui manque, propose de compléter.
 Validation explicite : le dev relit le backlog du module et valide.
 
 **À partir de là**, le workflow normal reprend : `/story`, `/ready`, `/done`.
+
+Après l’implémentation d’un écran, appliquer `VISUAL-QA.md` avant de le passer à `implemented`. Cette boucle appartient à la Definition of Done, pas au Gate module qui précède le code.
 
 ---
 

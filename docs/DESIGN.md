@@ -93,15 +93,25 @@
 **Règles de nommage :**
 **Contenu représentatif :** <!-- vraies longueurs, cas extrêmes, localisation -->
 
-## 8. Intégration Claude Design
+## 8. Interopérabilité des ateliers
 
-**Projet / espace :**
-**Système de design importé le :**
-**Version importée :**
-**Contraintes connues :**
+**Atelier courant :** <!-- Open Design / Codex / autre / aucun -->
+**Projet / espace (optionnel) :**
+**Système synchronisé le :**
+**Version / identifiant :**
+**Limites ou fallback cloud :**
 
-Claude Design est l'atelier visuel privilégié. Ce document et les handoffs sous `docs/design/` restent la référence durable lorsque le projet externe est inaccessible ou que le quota partagé est épuisé.
+`DESIGN.md` et les handoffs Git sont canoniques. L’atelier n’est qu’un éditeur ou un générateur interchangeable : aucune décision nécessaire à l’implémentation ne doit vivre uniquement dans son format propriétaire.
 
-## 9. Changelog
+## 9. Validation visuelle
+
+**Viewports de recette :** <!-- ex : 390×844, 768×1024 si pertinent, 1440×900 -->
+**Routes critiques :**
+**Données de recette :**
+**Tolérances / écarts acceptés :**
+
+Appliquer la boucle légère décrite dans [`VISUAL-QA.md`](VISUAL-QA.md). Les références approuvées vivent avec chaque handoff ; les captures d’exécution restent temporaires sauf choix explicite de baselines versionnées.
+
+## 10. Changelog
 
 - YYYY-MM-DD — [décision ou évolution visuelle]

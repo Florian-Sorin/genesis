@@ -14,7 +14,7 @@ Vérifie la **Definition of Done** et marque la story `[wip]` comme `[done]`.
    - [ ] `FUNCTIONAL.md` à jour si règle métier modifiée
    - [ ] `ARCHITECTURE.md` à jour si décision technique prise (ADR)
    - [ ] `SECURITY.md` à jour si l'impact sécurité a évolué
-   - [ ] Pour une story UI : revue visuelle et comportementale effectuée aux tailles cibles
+   - [ ] Pour une story UI : boucle `docs/VISUAL-QA.md` effectuée aux tailles cibles
    - [ ] Les écarts intentionnels sont documentés et les écrans sont `implemented`
    - [ ] `DESIGN.md` est à jour si un composant ou token a évolué
 4. Si un critère n'est pas satisfait : lister précisément ce qui manque et s'arrêter.

@@ -7,13 +7,14 @@
 **Synchronisée le :**
 **Implémentée au commit :**
 
-## Source Claude Design
+## Source de conception
 
 **Lien / identifiant :**
 **Mode ou modèle :**
 **Brief source :** `docs/design/modules/[module].md`
 **Recette :** `docs/design/screens/SXX/prompt.md`
 **Référence :** `docs/design/screens/SXX/reference.png`
+**Dérogation sans image :** <!-- justification pour un écran trivial, sinon « aucune » -->
 
 ## Cible
 
@@ -64,6 +65,11 @@
 <!-- Indiquer ce qui est canonique, éditable, généré/remplaçable et à ne pas écraser. -->
 
 ## Revue d'implémentation
+
+**Date / commit :**
+**Viewports capturés :**
+**Résultat :** <!-- à faire / écarts à corriger / validé -->
+**Captures temporaires ou rapport :**
 
 - [ ] Hiérarchie, contenu et composants cohérents avec la référence.
 - [ ] États et interactions conformes à FUNCTIONAL.md.

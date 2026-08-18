@@ -24,7 +24,7 @@ Si le repo est encore au stade template (BRIEF.md contient `[NOM DU PROJET]`, pa
 1. **Phase 1** — Pitch brut → `BRIEF.md`
 2. **Phase 2** — Interview structurée → `FUNCTIONAL.md` + `ARCHITECTURE.md` + `SECURITY.md`
 3. **Phase 3** — Fondations UX/UI → `DESIGN.md`
-4. **Phase 4** — Itération par module → Claude Design + handoffs + stories
+4. **Phase 4** — Itération par module → atelier de design + handoffs + stories
 
 Commande dédiée : `/init`. Chaque phase a un **gate de validation** (checklist auto + résumé pour validation explicite du dev). Pas de phase suivante sans gate validé.
 
@@ -42,7 +42,8 @@ Commande dédiée : `/init`. Chaque phase a un **gate de validation** (checklist
 > 7. `docs/stories/ST-XXX-*.md` — la story active (un fichier par story)
 > 8. `docs/WIREFRAMES.md` — section(s) correspondant à la story
 > 9. `docs/design/screens/SXX/README.md` — handoff approuvé des écrans concernés
-> 10. `docs/JOURNAL.md` — apprentissages des sessions précédentes (skim, pas lecture exhaustive)
+> 10. `docs/VISUAL-QA.md` — procédure de validation après implémentation UI
+> 11. `docs/JOURNAL.md` — apprentissages des sessions précédentes (skim, pas lecture exhaustive)
 
 ---
 
@@ -89,7 +90,7 @@ Si un critère n'est pas rempli : **ne pas démarrer**, signaler ce qui manque e
 - [ ] Tous les critères de done de la story satisfaits
 - [ ] Tests passent (cf. `ARCHITECTURE.md` section Tests)
 - [ ] Pas de `console.log` ou code commenté laissé
-- [ ] Pour une story UI, revue visuelle et comportementale effectuée et écran passé à `implemented`
+- [ ] Pour une story UI, boucle `docs/VISUAL-QA.md` effectuée aux viewports cibles et écran passé à `implemented`
 - [ ] `FUNCTIONAL.md` mis à jour si une règle métier a évolué
 - [ ] `ARCHITECTURE.md` mis à jour si une décision technique a été prise (ADR)
 - [ ] Entrée ajoutée dans `JOURNAL.md` si quelque chose de notable a été appris
@@ -218,13 +219,15 @@ En cas de doute sur un pattern, choisir la solution la plus lisible et la plus p
 <!-- Pour Cursor, ces actions peuvent être déclenchées en demandant à l'agent directement. -->
 
 - `/init`       — orchestre le workflow d'initialisation d'un nouveau projet (cf. `docs/KICKOFF.md`)
-- `/design`     — conçoit ou met à jour un module avec Claude Design et synchronise son handoff
+- `/design`     — conçoit ou met à jour un module avec un atelier optionnel et synchronise son handoff
 - `/story`      — affiche la story `[wip]` ou `[todo]` suivante avec son contexte complet
 - `/ready`      — vérifie la Definition of Ready pour la prochaine story `[todo]`
 - `/done`       — vérifie la Definition of Done et marque la story `[wip]` comme `[done]`
 - `/new-story`  — guide la création d'une nouvelle story dans `docs/stories/`
 - `/sync-doc`   — audite la cohérence entre code et documentation
 - `/journal`    — ajoute une entrée dans `JOURNAL.md` à la fin d'une session
+
+Pour Codex et les agents compatibles avec les skills de dépôt, le workflow UX/UI équivalent se trouve dans `.agents/skills/genesis-design/SKILL.md`. Les commandes Claude ne sont que des adaptateurs : les documents Markdown restent canoniques.
 
 ---
 
@@ -248,6 +251,8 @@ En cas de doute sur un pattern, choisir la solution la plus lisible et la plus p
 ├── CLAUDE.md           → import vers AGENTS.md (compat Claude Code)
 ├── .claude/
 │   └── commands/       → slash commands Claude Code
+├── .agents/skills/
+│   └── genesis-design/ → skill UX/UI portable
 ├── docs/
 │   ├── BRIEF.md
 │   ├── FUNCTIONAL.md
@@ -255,7 +260,8 @@ En cas de doute sur un pattern, choisir la solution la plus lisible et la plus p
 │   ├── SECURITY.md
 │   ├── WIREFRAMES.md
 │   ├── DESIGN.md
-│   ├── design/          → briefs de modules et handoffs Claude Design
+│   ├── design/          → briefs de modules et handoffs agnostiques
+│   ├── VISUAL-QA.md     → boucle navigateur, captures, revue et corrections
 │   ├── KICKOFF.md      → workflow d'initialisation projet (utilisé par /init)
 │   ├── STORIES.md      → index du backlog
 │   ├── stories/        → un fichier par story

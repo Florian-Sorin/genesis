@@ -1,41 +1,38 @@
 # /design [module]
 
-Conçoit ou met à jour un module avec Claude Design, puis synchronise un handoff exploitable par Claude Code.
+Conçoit ou met à jour un module avec le workflow Genesis, indépendamment de l’atelier utilisé. Le skill portable `.agents/skills/genesis-design/SKILL.md` décrit la même procédure pour Codex et les agents compatibles.
 
 ## 1. Charger le contexte
 
-1. Lire `FUNCTIONAL.md`, `DESIGN.md`, `WIREFRAMES.md` et les apprentissages pertinents de `JOURNAL.md`.
-2. Identifier le module demandé ; s'il manque, demander une seule clarification.
-3. Créer ou mettre à jour `docs/design/modules/[module].md` depuis `_MODULE-BRIEF-TEMPLATE.md`.
-4. Référencer les sections sources et noter leur version ou date. Ne pas recopier inutilement les règles.
+Lire dans l’ordre `BRIEF.md`, `FUNCTIONAL.md`, `ARCHITECTURE.md`, `SECURITY.md`, `DESIGN.md`, puis les sections concernées de `WIREFRAMES.md`. Lire les briefs et handoffs existants du module.
 
-## 2. Préparer la conception
+## 2. Préparer et valider le brief
 
-1. Définir l'objectif, le parcours, l'inventaire des écrans et leurs états obligatoires.
-2. Renseigner plateforme, viewports, contenu représentatif, composants et tokens existants, accessibilité et hors scope.
-3. Mettre l'index et les sections de `WIREFRAMES.md` à jour.
-4. Présenter ce brief au développeur et attendre sa validation avant d'ouvrir Claude Design.
+1. Créer ou mettre à jour `docs/design/modules/[module].md` depuis `_MODULE-BRIEF-TEMPLATE.md`.
+2. Référencer les sources canoniques sans recopier leurs règles.
+3. Décrire parcours, écrans, états, contenu représentatif, viewports, responsive, accessibilité et hors scope.
+4. Mettre l’index et les sections de `WIREFRAMES.md` à jour.
+5. Présenter le brief et attendre la validation du développeur avant la génération visuelle.
 
-## 3. Piloter Claude Design
+## 3. Explorer dans l’atelier disponible
 
-1. Produire une structure basse fidélité.
-2. Explorer au maximum deux ou trois directions visuelles.
-3. Faire sélectionner explicitement une direction au développeur.
-4. Grouper les retours en une passe : structure, contenu, hiérarchie, composants, adaptation, accessibilité.
-5. Vérifier les interactions et tous les états dans la passe finale.
+1. Valider d’abord une structure basse fidélité.
+2. Explorer au maximum deux ou trois directions réellement distinctes.
+3. Faire sélectionner explicitement une direction.
+4. Grouper les retours : structure, contenu, hiérarchie, composants, responsive et accessibilité.
+5. Vérifier interactions et états dans la passe finale.
 
-Claude Design partage le quota des autres usages Claude. Ne pas multiplier les micro-itérations. En cas d'indisponibilité, conserver le même brief et utiliser des captures avec la preview déclarée dans `ARCHITECTURE.md`.
+Open Design est conseillé quand il est disponible, mais reste optionnel. Codex Cloud peut produire les mêmes livrables dans la preview Web de la stack. Un autre agent ou outil peut appliquer le brief dès lors qu’il restitue le handoff standard.
 
 ## 4. Synchroniser le handoff
 
 Pour chaque écran approuvé :
 
 1. Créer `docs/design/screens/SXX/README.md` depuis `_SCREEN-HANDOFF-TEMPLATE.md`.
-2. Ajouter `reference.png`, `prompt.md`, les assets et, si utile, l'export généré.
-3. Documenter version, source Claude Design, viewports, structure, interactions, états, composants, tokens, adaptation, accessibilité et écarts connus.
-4. Marquer clairement les fichiers canoniques, éditables ou générés/remplaçables.
-5. Passer l'écran de `approved` à `synced` uniquement quand le paquet est complet ; reporter ce statut dans `WIREFRAMES.md`.
+2. Ajouter `reference.png` si une référence visuelle existe, `prompt.md`, les assets utiles et éventuellement un export généré clairement identifié.
+3. Documenter source, version, viewports, structure, interactions, états, composants, tokens, adaptation, accessibilité et écarts connus.
+4. Passer à `synced` uniquement quand l’implémentation est reproductible. Une dérogation textuelle explicite peut remplacer l’image pour un écran trivial.
 
-## 5. Gate module
+## 5. Gate et Visual QA
 
-Produire la checklist du « Gate module » de `KICKOFF.md`. Ne pas créer les stories avant que le handoff design soit validé. Après validation, proposer `/new-story` pour découper le module.
+Produire la checklist du « Gate module » de `KICKOFF.md`. Après implémentation, exécuter `docs/VISUAL-QA.md` et reporter le résultat dans la section « Revue d’implémentation » du handoff. Ne créer les stories qu’après validation du handoff.

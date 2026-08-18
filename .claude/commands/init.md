@@ -50,14 +50,14 @@ Enchaîner les 5 blocs définis dans `docs/KICKOFF.md` (Périmètre, Parcours, A
 #### Phase 3 — Fondations UX/UI
 
 1. Remplir `DESIGN.md` et la section Design preview de `ARCHITECTURE.md`.
-2. Guider l'import du système dans Claude Design, ou documenter le fallback.
+2. Choisir l’atelier (`Open Design`, agent/preview, autre) et documenter le fallback cloud.
 3. Lancer le Gate design de `KICKOFF.md`.
 
 #### Phase 4 — Itération par module
 
 1. Lire la liste des modules MVP dans `FUNCTIONAL.md` section 3.
 2. Pour chaque module, dans l'ordre :
-   - **4a-4c. Design** : exécuter `/design [module]`, concevoir dans Claude Design, remplir les écrans dans `WIREFRAMES.md` et synchroniser leurs handoffs locaux.
+   - **4a-4c. Design** : exécuter `/design [module]`, concevoir avec l’atelier disponible ou la preview de la stack, remplir `WIREFRAMES.md` et synchroniser les handoffs locaux.
    - **4d. Stories** : utiliser `node scripts/new-story.mjs` pour chaque story du module. Enrichir le fichier généré.
    - Lancer le **Gate module** pour ce module.
    - Demander au dev s'il veut enchaîner sur le module suivant ou commencer à coder le module qui vient d'être préparé.
