@@ -32,10 +32,10 @@ Phase 1 — Pitch brut
    ↓ [Gate 1 : BRIEF.md validé]
 Phase 2 — Fonctionnel, architecture et sécurité
    ↓ [Gate 2]
-Phase 3 — Fondations UX/UI
-   ↓ [Gate design : DESIGN.md validé]
+Phase 3 — UX + Design Intelligence
+   ↓ [Gate design : direction + DESIGN.md validés]
 Phase 4 — Conception par module
-   brief → atelier optionnel → validation → handoff → stories
+   brief → Open Design → critic → corrections → handoff → stories
    ↓ [Gate module]
 Développement story par story : /story → /ready → /done
 ```
@@ -68,16 +68,17 @@ L'agent enchaîne 5 blocs de questions ciblées, en validant chaque bloc avant d
 
 À chaque choix structurant, un ADR est ajouté dans `ARCHITECTURE.md` section 8. À la fin, tu as 3 fichiers entièrement spécifiés.
 
-### Phases 3 et 4 — Design puis itération par module
+### Phases 3 et 4 — Design Intelligence puis itération par module
 
-La phase 3 fixe dans `DESIGN.md` les plateformes, principes UX, tokens, composants et exigences d'accessibilité. Le mécanisme de preview adapté à la stack est déclaré dans `ARCHITECTURE.md`.
+La phase 3 impose **UX → ambition → direction artistique → système**. `PRODUCT` est le défaut des applications : efficacité, clarté et cohérence avant l’expression. `AWARD` est un choix explicite pour une surface narrative ou de marque : direction, imagerie, typographie et motion plus ambitieuses, sans effets automatiques. Le design brief et la visual thesis sont approuvés avant que `DESIGN.md` en dérive tokens et composants.
 
 Pour chaque module MVP, dans l'ordre :
 
 1. **Brief** : `/design [module]` prépare le parcours, les écrans, états et contraintes.
-2. **Atelier interchangeable** : Open Design si disponible, sinon Codex dans la preview de la stack ou un autre outil ; structure basse fidélité puis deux ou trois directions au maximum.
-3. **Handoff Git** : la variante validée est synchronisée sous `docs/design/screens/SXX/`. Les décisions restent exploitables sans l’atelier qui les a produites.
-4. **Stories** : découpage via `node scripts/new-story.mjs`, puis Gate module.
+2. **Open Design** : atelier principal, alimenté par la direction approuvée ; structure basse fidélité puis deux ou trois directions au maximum. La preview reste le fallback.
+3. **Critique** : captures multi-viewports, score sur 100, détection d’AI slop, puis deux passes de correction par défaut (trois maximum).
+4. **Handoff Git** : la variante validée est synchronisée sous `docs/design/screens/SXX/`.
+5. **Stories** : découpage via `node scripts/new-story.mjs`, puis Gate module.
 
 Après implémentation, la procédure [`docs/VISUAL-QA.md`](docs/VISUAL-QA.md) boucle sur navigateur, captures, revue des écarts et corrections. Playwright est recommandé uniquement lorsqu’il fait partie de la stack : Genesis n’impose aucune infrastructure de snapshots.
 
@@ -85,6 +86,8 @@ Après implémentation, la procédure [`docs/VISUAL-QA.md`](docs/VISUAL-QA.md) b
 
 - **Avec Open Design** : transmettre le brief du module, `DESIGN.md`, les sections d’écran et les contraintes de stack ; explorer puis restituer chaque écran dans le handoff standard. Les exports restent secondaires et remplaçables.
 - **Avec Codex Cloud seul** : le skill `.agents/skills/genesis-design/` suit exactement les mêmes gates, génère la preview dans le vrai framework et utilise le navigateur cloud pour la Visual QA. Aucun repository local ni format propriétaire n’est requis.
+
+Design Intelligence encadre Open Design sans le remplacer : `genesis-art-direction` prépare `visual-direction.md`, `genesis-design-critic` critique le rendu réel, et `genesis-motion-design` n’intervient que si le mouvement sert une intention. `anti-ai-slop.md` applique **Composition before Components**. Figma peut prolonger le raffinement, mais reste facultatif et non canonique ; aucun package supplémentaire n’est requis.
 
 **Avantage de l'itération par module** : tu peux préparer les wireframes du module 2 pendant que tu codes le module 1.
 

@@ -28,13 +28,13 @@ Phase 1 — Pitch brut                           (5 min, dev seul)
    ↓ [gate 1 : BRIEF.md validé]
 Phase 2 — Interview structurée                 (30-45 min, dev + agent)
    ↓ [gate 2 : FUNCTIONAL + ARCHITECTURE + SECURITY validés]
-Phase 3 — Fondations UX/UI                     (15-30 min, dev + agent)
-   ↓ [gate design : DESIGN.md validé]
+Phase 3 — UX + Design Intelligence             (30-60 min, dev + agent)
+   ↓ [gate design : direction visuelle + DESIGN.md validés]
 Phase 4 — Itération par module fonctionnel     (variable, dev + agent)
    pour chaque module MVP, dans l'ordre :
      4a. Brief et écrans                       (docs/design/ + WIREFRAMES.md)
-     4b. Exploration et prototype              (atelier optionnel)
-     4c. Validation et handoff                 (docs/design/screens/)
+     4b. Open Design : exploration/prototype   (atelier principal, fallback possible)
+     4c. Critique, correction et handoff       (docs/design/screens/)
      4d. Stories du module                     (STORIES.md + docs/stories/ST-XXX-*.md)
      ↓ [gate module : handoff et stories validés]
    ↓
@@ -160,19 +160,25 @@ Validation explicite : résumé du dev de chaque fichier + "go" final.
 
 ---
 
-## Phase 3 — Fondations UX/UI
+## Phase 3 — UX et Design Intelligence
 
-**Objectif :** donner à tout atelier ou agent une référence visuelle globale avant de produire des écrans.
+**Objectif :** séparer UX, direction artistique et UI afin de donner à Open Design une intention propre au produit avant de produire des écrans.
 
-1. Remplir `DESIGN.md` : principes UX, plateformes et conventions natives, direction visuelle, références et anti-références, accessibilité, tokens et premières familles de composants.
-2. Déclarer dans `ARCHITECTURE.md` le mécanisme de preview propre à la stack cible.
-3. Importer ou reproduire le système approuvé dans l’atelier de design choisi et noter sa version dans `DESIGN.md`.
-4. Ne pas concevoir tout le MVP : seules les fondations transverses sont figées ici.
+1. Valider jobs, parcours, architecture de l’information et navigation avant toute esthétique.
+2. Remplir `docs/design/design-brief.md` et choisir `PRODUCT` par défaut ou `AWARD` explicitement justifié.
+3. Utiliser le skill `genesis-art-direction` pour produire et approuver `docs/design/visual-direction.md`.
+4. Construire un moodboard analysé avant la maquette en mode AWARD, et en PRODUCT si identité ou imagerie sont structurantes. Extraire des principes ; ne jamais recopier.
+5. **Dériver ensuite** `DESIGN.md` : principes, tokens et composants. Ne pas partir de tokens génériques pour inventer l’identité après coup.
+6. Déclarer dans `ARCHITECTURE.md` le mécanisme de preview de la stack.
+7. Importer ou reproduire ces fondations dans Open Design et noter leur version dans `DESIGN.md`. Ne pas concevoir tout le MVP ici.
 
 ### Gate design
 
 - [ ] Plateformes, contexte d'usage, navigation globale et viewports de référence renseignés.
-- [ ] Direction visuelle, références et anti-références validées.
+- [ ] Jobs et parcours UX validés avant la direction visuelle.
+- [ ] `design-brief.md` approuvé avec mode PRODUCT/AWARD justifié.
+- [ ] `visual-direction.md` approuvé ; thesis, anti-goals et responsive sont actionnables.
+- [ ] Moodboard analysé si mode AWARD ou identité/imagerie structurante.
 - [ ] Accessibilité cible et contraintes adaptatives renseignées.
 - [ ] Tokens de base et composants structurants suffisamment définis pour concevoir le premier module.
 - [ ] Mécanisme de preview documenté dans `ARCHITECTURE.md`.
@@ -195,14 +201,14 @@ Validation explicite : le dev valide les fondations avant la conception détaill
 
 ### 4b. Exploration dans l’atelier de design choisi
 
-Open Design peut accélérer les wireframes, variantes et prototypes interactifs, mais reste optionnel. Codex Cloud ou un autre agent peut travailler directement dans la preview de la stack. Le dépôt reste la source durable des décisions nécessaires à l'implémentation.
+Open Design reste l’atelier principal pour les wireframes, variantes et prototypes. Design Intelligence prépare son entrée et contrôle sa sortie ; ce n’est pas un second atelier. S’il est indisponible, appliquer le même brief dans la preview de la stack. Le dépôt reste la source durable des décisions.
 
 Cycle nominal pour maîtriser le coût et le nombre d’itérations :
 
-1. Une passe basse fidélité sur la structure et le parcours.
-2. Deux ou trois directions visuelles au maximum.
-3. Sélection explicite d'une direction.
-4. Une correction groupée par catégories : structure, contenu, hiérarchie, composants, adaptation et accessibilité.
+1. Relire `visual-direction.md`, `DESIGN.md`, les principes et l’UI existante.
+2. Une passe basse fidélité sur structure et parcours, avec « Composition before Components ».
+3. Deux ou trois directions au maximum, compatibles avec la visual thesis.
+4. Sélection explicite d’une direction.
 5. Une passe finale couvrant états et interactions.
 
 Ne jamais lancer l'exploration sans brief validé. Si l’atelier choisi est indisponible, utiliser les mêmes documents avec une capture et la preview de la stack cible.
@@ -213,7 +219,9 @@ Ne jamais lancer l'exploration sans brief validé. Si l’atelier choisi est ind
 2. Créer `docs/design/screens/SXX/` depuis `_SCREEN-HANDOFF-TEMPLATE.md`.
 3. Ajouter la référence visuelle, la recette reproductible, les assets, composants, tokens, interactions, états et contraintes adaptatives.
 4. Distinguer les fichiers canoniques des exports générés et remplaçables.
-5. Passer l'écran à `synced` seulement lorsque le handoff local est complet.
+5. Passer l’écran à `synced` seulement lorsque le handoff local est complet.
+6. Exécuter `genesis-design-critic` sur les captures : score, détection d’AI slop, trois problèmes racines maximum, correction et nouvelle critique.
+7. Limiter à deux passes par défaut, trois maximum, puis reporter le résultat dans le handoff.
 
 ### 4d. Stories du module
 

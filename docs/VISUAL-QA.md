@@ -4,7 +4,7 @@
 
 ## But et sources
 
-La Visual QA vérifie l’implémentation après les tests fonctionnels. Comparer, dans cet ordre, aux règles de `DESIGN.md`, au comportement de `FUNCTIONAL.md`, au handoff de l’écran et à sa référence approuvée. Une image ne peut jamais redéfinir une règle métier.
+La Visual QA vérifie l’implémentation après les tests fonctionnels. Comparer, dans cet ordre, au comportement de `FUNCTIONAL.md`, à `design/visual-direction.md`, à `DESIGN.md`, au handoff et à sa référence approuvée. Une image ne peut jamais redéfinir une règle métier. Conduire la critique mesurable avec le skill `genesis-design-critic`.
 
 ## Prérequis par projet
 
@@ -16,12 +16,13 @@ Les données de recette doivent être déterministes, non sensibles et couvrir c
 
 1. Lancer l’application avec la commande déclarée dans `ARCHITECTURE.md`.
 2. Ouvrir la route et préparer l’état décrit dans le handoff.
-3. Capturer au minimum les viewports de référence du handoff ; ajouter la tablette seulement si son comportement diffère.
+3. Capturer mobile, tablette, desktop et grand desktop. Fixer les dimensions dans `DESIGN.md` et le handoff ; justifier toute classe non pertinente.
 4. Contrôler dans cet ordre : structure et contenu, responsive, composants/tokens, états et interactions, accessibilité, puis finitions.
 5. Classer chaque écart : `bloquant`, `majeur`, `mineur` ou `intentionnel`.
 6. Corriger la source appropriée : code pour une divergence, handoff/`DESIGN.md` pour une décision approuvée, `FUNCTIONAL.md` si le comportement produit change.
-7. Relancer les checks fonctionnels affectés et reprendre les captures jusqu’à absence d’écart bloquant ou majeur.
-8. Compléter la revue d’implémentation du handoff et passer l’écran à `implemented` après validation humaine.
+7. Scorer le rendu, répondre au risque d’AI slop et sélectionner trois problèmes racines maximum.
+8. Relancer les checks affectés et reprendre les mêmes captures : deux passes par défaut, trois maximum, puis appliquer les seuils du critic.
+9. Compléter la revue d’implémentation du handoff et passer l’écran à `implemented` après validation humaine.
 
 ## Checklist minimale
 

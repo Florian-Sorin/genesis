@@ -3,6 +3,7 @@
 **Date :** YYYY-MM-DD
 **Outil / mode :** [outil ou agent] / [mode]
 **Brief source :** `docs/design/modules/[module].md`
+**Direction source :** `docs/design/visual-direction.md`
 **Version de DESIGN.md :**
 **Plateforme et viewport :**
 **Pièces jointes :**
@@ -12,6 +13,8 @@
 ```text
 [Prompt]
 ```
+
+Rappeler la visual thesis, le mode, les anti-goals et les principes de composition. Ne jamais envoyer un brief produit vague directement à l’atelier.
 
 ## Variantes
 

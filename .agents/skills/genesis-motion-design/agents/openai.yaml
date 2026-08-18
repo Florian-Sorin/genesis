@@ -1,0 +1,4 @@
+interface:
+  display_name: "Genesis Motion Design"
+  short_description: "Concevoir un motion intentionnel et accessible"
+  default_prompt: "Définis une motion thesis sobre, utile et accessible pour cette interface."

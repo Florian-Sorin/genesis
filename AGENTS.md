@@ -23,7 +23,7 @@ Si le repo est encore au stade template (BRIEF.md contient `[NOM DU PROJET]`, pa
 
 1. **Phase 1** — Pitch brut → `BRIEF.md`
 2. **Phase 2** — Interview structurée → `FUNCTIONAL.md` + `ARCHITECTURE.md` + `SECURITY.md`
-3. **Phase 3** — Fondations UX/UI → `DESIGN.md`
+3. **Phase 3** — UX + Design Intelligence → brief, direction visuelle, puis `DESIGN.md`
 4. **Phase 4** — Itération par module → atelier de design + handoffs + stories
 
 Commande dédiée : `/init`. Chaque phase a un **gate de validation** (checklist auto + résumé pour validation explicite du dev). Pas de phase suivante sans gate validé.
@@ -37,13 +37,14 @@ Commande dédiée : `/init`. Chaque phase a un **gate de validation** (checklist
 > 2. `docs/FUNCTIONAL.md` — spécifications fonctionnelles (**source de vérité comportementale**)
 > 3. `docs/ARCHITECTURE.md` — stack et conventions techniques
 > 4. `docs/SECURITY.md` — règles de sécurité transverses (RLS, permissions, secrets)
-> 5. `docs/DESIGN.md` — système visuel global, composants et accessibilité
-> 6. `docs/STORIES.md` — index du backlog → identifier la prochaine story `[todo]`
-> 7. `docs/stories/ST-XXX-*.md` — la story active (un fichier par story)
-> 8. `docs/WIREFRAMES.md` — section(s) correspondant à la story
-> 9. `docs/design/screens/SXX/README.md` — handoff approuvé des écrans concernés
-> 10. `docs/VISUAL-QA.md` — procédure de validation après implémentation UI
-> 11. `docs/JOURNAL.md` — apprentissages des sessions précédentes (skim, pas lecture exhaustive)
+> 5. `docs/design/design-brief.md` puis `docs/design/visual-direction.md` — ambition et direction approuvée
+> 6. `docs/DESIGN.md` — système visuel dérivé, composants et accessibilité
+> 7. `docs/STORIES.md` — index du backlog → identifier la prochaine story `[todo]`
+> 8. `docs/stories/ST-XXX-*.md` — la story active (un fichier par story)
+> 9. `docs/WIREFRAMES.md` — section(s) correspondant à la story
+> 10. `docs/design/screens/SXX/README.md` — handoff approuvé des écrans concernés
+> 11. `docs/VISUAL-QA.md` — procédure de validation après implémentation UI
+> 12. `docs/JOURNAL.md` — apprentissages des sessions précédentes (skim, pas lecture exhaustive)
 
 ---
 
@@ -55,9 +56,10 @@ En cas de conflit entre documents, l'ordre de précédence est :
 2. `docs/SECURITY.md` — la sécurité ne se négocie pas
 3. `docs/FUNCTIONAL.md` — comportement attendu
 4. `docs/ARCHITECTURE.md` — choix techniques
-5. `docs/DESIGN.md` — règles visuelles globales (ne décrit jamais un comportement métier seul)
-6. `docs/WIREFRAMES.md` et `docs/design/` — écrans et handoffs approuvés
-7. `docs/stories/*.md` — implémentation
+5. `docs/design/visual-direction.md` — direction artistique approuvée
+6. `docs/DESIGN.md` — système global dérivé (ne décrit jamais un comportement métier seul)
+7. `docs/WIREFRAMES.md` et les handoffs — écrans approuvés
+8. `docs/stories/*.md` — implémentation
 
 Si `WIREFRAMES.md` contredit `FUNCTIONAL.md`, **`FUNCTIONAL.md` gagne** et il faut mettre à jour `WIREFRAMES.md`.
 
@@ -74,6 +76,7 @@ Une story ne peut passer en `[wip]` que si **tous** ces critères sont vrais :
 - [ ] Le module fonctionnel concerné est entièrement spécifié dans `FUNCTIONAL.md`
 - [ ] Si la story référence des écrans, ces écrans existent dans `WIREFRAMES.md` (a minima Route + Contenu + Actions + Lien externe ou prompt)
 - [ ] Si la story implémente une UI, chaque écran est `synced` et possède un handoff complet sous `docs/design/screens/SXX/`
+- [ ] Si la story implémente une UI, le design brief et la direction visuelle sont approuvés ; `DESIGN.md` en découle
 - [ ] **Check wireframe au démarrage** : le dev a relu les wireframes des écrans concernés et explicitement choisi entre :
   - ✅ **OK tel quel** → on code
   - ✏️ **Ajustement mineur** → patch `WIREFRAMES.md`, commit dédié `[ST-XXX] adjust wireframes for [écran]`, on code
@@ -191,6 +194,17 @@ Référence détaillée : `docs/SECURITY.md`.
 
 ## Comportement attendu
 
+### Routage design
+
+- UX / parcours → `FUNCTIONAL.md`, `WIREFRAMES.md`, puis skill `genesis-design`.
+- Art direction / moodboard → `genesis-art-direction` et `visual-direction.md` avant Open Design.
+- Maquette → Open Design via `genesis-design` ; ne jamais lui envoyer directement un brief vague.
+- Motion significative → `genesis-motion-design`, sans dépendance automatique.
+- Implémentation UI → handoff `synced`, direction, design system et UI existante.
+- Critique UI → `genesis-design-critic` sur captures réelles et boucle de `VISUAL-QA.md`.
+
+Avant une vue ou un composant important, relire direction, design system, principes et UI existante. **Composition before Components** ; contrôler `docs/design/anti-ai-slop.md`. L’originalité ne prime jamais sur l’UX ou l’accessibilité.
+
 ### Communication
 
 - Répondre en français.
@@ -252,7 +266,10 @@ Pour Codex et les agents compatibles avec les skills de dépôt, le workflow UX/
 ├── .claude/
 │   └── commands/       → slash commands Claude Code
 ├── .agents/skills/
-│   └── genesis-design/ → skill UX/UI portable
+│   ├── genesis-design/          → orchestration UX/UI et Open Design
+│   ├── genesis-art-direction/   → thesis et références
+│   ├── genesis-design-critic/   → scoring et corrections
+│   └── genesis-motion-design/   → motion intentionnelle
 ├── docs/
 │   ├── BRIEF.md
 │   ├── FUNCTIONAL.md
