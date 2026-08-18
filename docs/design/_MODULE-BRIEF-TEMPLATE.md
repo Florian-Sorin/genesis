@@ -4,6 +4,8 @@
 **Dernière mise à jour :** YYYY-MM-DD
 **Sources :** <!-- sections précises de FUNCTIONAL.md et DESIGN.md -->
 **Version des sources :** <!-- date, commit ou version documentaire -->
+**Ambition :** <!-- PRODUCT / AWARD -->
+**Direction :** `docs/design/visual-direction.md`
 
 ## Objectif utilisateur
 
@@ -31,6 +33,12 @@
 ## Contenu représentatif et cas extrêmes
 
 ## Références et anti-références
+
+<!-- Extraire des principes, ne jamais demander de copie. Vérifier anti-ai-slop.md. -->
+
+## Composition avant composants
+
+<!-- Hiérarchie, flux, zones, rythme, espace négatif, densité, lecture et contraste. -->
 
 ## Hors scope
 

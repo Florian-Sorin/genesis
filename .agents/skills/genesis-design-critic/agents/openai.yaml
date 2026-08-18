@@ -1,0 +1,4 @@
+interface:
+  display_name: "Genesis Design Critic"
+  short_description: "Critiquer un rendu UI réel et piloter ses corrections"
+  default_prompt: "Évalue ce rendu Genesis, score-le et priorise les corrections visuelles."

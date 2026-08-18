@@ -4,7 +4,7 @@ Conçoit ou met à jour un module avec le workflow Genesis, indépendamment de l
 
 ## 1. Charger le contexte
 
-Lire dans l’ordre `BRIEF.md`, `FUNCTIONAL.md`, `ARCHITECTURE.md`, `SECURITY.md`, `DESIGN.md`, puis les sections concernées de `WIREFRAMES.md`. Lire les briefs et handoffs existants du module.
+Lire dans l’ordre `BRIEF.md`, `FUNCTIONAL.md`, `ARCHITECTURE.md`, `SECURITY.md`, `design/design-brief.md`, `design/visual-direction.md`, `DESIGN.md`, puis les sections concernées de `WIREFRAMES.md`. Lire l’UI et les handoffs existants.
 
 ## 2. Préparer et valider le brief
 
@@ -13,6 +13,7 @@ Lire dans l’ordre `BRIEF.md`, `FUNCTIONAL.md`, `ARCHITECTURE.md`, `SECURITY.md
 3. Décrire parcours, écrans, états, contenu représentatif, viewports, responsive, accessibilité et hors scope.
 4. Mettre l’index et les sections de `WIREFRAMES.md` à jour.
 5. Présenter le brief et attendre la validation du développeur avant la génération visuelle.
+6. Si la direction n’est pas approuvée, arrêter et exécuter `genesis-art-direction` avant Open Design.
 
 ## 3. Explorer dans l’atelier disponible
 
@@ -22,7 +23,7 @@ Lire dans l’ordre `BRIEF.md`, `FUNCTIONAL.md`, `ARCHITECTURE.md`, `SECURITY.md
 4. Grouper les retours : structure, contenu, hiérarchie, composants, responsive et accessibilité.
 5. Vérifier interactions et états dans la passe finale.
 
-Open Design est conseillé quand il est disponible, mais reste optionnel. Codex Cloud peut produire les mêmes livrables dans la preview Web de la stack. Un autre agent ou outil peut appliquer le brief dès lors qu’il restitue le handoff standard.
+Open Design est l’atelier principal ; Design Intelligence prépare son entrée et critique sa sortie. Si Open Design est indisponible, la preview peut produire les mêmes livrables sans changer de workflow.
 
 ## 4. Synchroniser le handoff
 
@@ -35,4 +36,4 @@ Pour chaque écran approuvé :
 
 ## 5. Gate et Visual QA
 
-Produire la checklist du « Gate module » de `KICKOFF.md`. Après implémentation, exécuter `docs/VISUAL-QA.md` et reporter le résultat dans la section « Revue d’implémentation » du handoff. Ne créer les stories qu’après validation du handoff.
+Produire la checklist du « Gate module » de `KICKOFF.md`. Sur prototype puis après implémentation, exécuter `genesis-design-critic` et `docs/VISUAL-QA.md`, avec deux passes par défaut et trois maximum. Reporter scores, AI slop et corrections dans le handoff. Ne créer les stories qu’après validation.

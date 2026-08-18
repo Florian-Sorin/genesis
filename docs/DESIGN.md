@@ -3,6 +3,7 @@
 <!-- Dernière mise à jour : YYYY-MM-DD -->
 <!-- Lire BRIEF.md et FUNCTIONAL.md avant ce fichier. -->
 <!-- Source de vérité visuelle globale. Les règles métier restent dans FUNCTIONAL.md. -->
+<!-- La direction est décidée dans design/visual-direction.md AVANT sa traduction en système. -->
 
 ---
 
@@ -25,12 +26,18 @@
 
 ## 3. Direction visuelle
 
+**Design brief :** [`design/design-brief.md`](design/design-brief.md)
+**Direction canonique :** [`design/visual-direction.md`](design/visual-direction.md)
+**Ambition :** <!-- PRODUCT / AWARD -->
+**Visual thesis :**
 **Style général :**
 **Références :**
 **Anti-références :**
 **Densité :**
 **Mode sombre :** <!-- oui / non / plus tard -->
 **Voix du contenu :**
+
+Les tokens et composants découlent de la direction approuvée. Appliquer **Composition before Components** : une primitive UI sert la composition ; elle ne la remplace pas.
 
 ## 4. Accessibilité
 
@@ -68,8 +75,12 @@
 **Rayons :**
 **Élévations / ombres :**
 **Grille :**
+**Containers :**
+**Bordures / séparateurs :**
 **Icônes :**
 **Motion :**
+**Feedback :**
+**Règles responsive :**
 
 ## 6. Catalogue des composants
 

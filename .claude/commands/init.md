@@ -15,7 +15,7 @@ Orchestre le workflow d'initialisation d'un nouveau projet (de l'idée à la pre
 2. Évaluer où en est le projet :
    - **Phase 1** : `BRIEF.md` contient encore `[NOM DU PROJET]` ou des placeholders dans les sections obligatoires.
    - **Phase 2** : BRIEF rempli, mais `FUNCTIONAL.md` ou `ARCHITECTURE.md` ont encore des placeholders structurants.
-   - **Phase 3** : docs structurels OK, mais `DESIGN.md` contient encore ses placeholders structurants.
+   - **Phase 3** : docs structurels OK, mais le design brief, la direction visuelle ou `DESIGN.md` reste incomplet.
    - **Phase 4** : fondations design validées, mais `WIREFRAMES.md` vide ou `STORIES.md` sans story réelle.
    - **Bootstrappé** : au moins une story `[done]` ou plusieurs stories `[todo]` réelles. Dans ce cas, **arrêter** et signaler au dev qu'il doit utiliser `/story` ou `/new-story`.
 3. Demander au dev de confirmer la phase détectée avant de continuer.
@@ -49,9 +49,10 @@ Enchaîner les 5 blocs définis dans `docs/KICKOFF.md` (Périmètre, Parcours, A
 
 #### Phase 3 — Fondations UX/UI
 
-1. Remplir `DESIGN.md` et la section Design preview de `ARCHITECTURE.md`.
-2. Choisir l’atelier (`Open Design`, agent/preview, autre) et documenter le fallback cloud.
-3. Lancer le Gate design de `KICKOFF.md`.
+1. Valider UX et parcours, remplir `design/design-brief.md` et choisir PRODUCT/AWARD.
+2. Exécuter `genesis-art-direction`, approuver `design/visual-direction.md`, puis en dériver `DESIGN.md`.
+3. Remplir Design preview dans `ARCHITECTURE.md`, choisir Open Design comme atelier principal et documenter le fallback.
+4. Lancer le Gate design de `KICKOFF.md`.
 
 #### Phase 4 — Itération par module
 

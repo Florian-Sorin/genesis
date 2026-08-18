@@ -1,0 +1,4 @@
+interface:
+  display_name: "Genesis Art Direction"
+  short_description: "Définir une direction visuelle distinctive avant la maquette"
+  default_prompt: "Définis la direction artistique et la visual thesis de ce projet Genesis avant Open Design."

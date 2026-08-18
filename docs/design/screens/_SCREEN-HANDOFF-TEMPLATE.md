@@ -12,6 +12,7 @@
 **Lien / identifiant :**
 **Mode ou modèle :**
 **Brief source :** `docs/design/modules/[module].md`
+**Direction source :** `docs/design/visual-direction.md`
 **Recette :** `docs/design/screens/SXX/prompt.md`
 **Référence :** `docs/design/screens/SXX/reference.png`
 **Dérogation sans image :** <!-- justification pour un écran trivial, sinon « aucune » -->
@@ -68,6 +69,9 @@
 
 **Date / commit :**
 **Viewports capturés :**
+**Score critic :** <!-- PRODUCT >= 80/100 ; AWARD >= 85/100 ; aucun axe < 6 -->
+**Risque d’AI slop :** <!-- oui/non + indices -->
+**Passes effectuées :** <!-- 1 à 3 -->
 **Résultat :** <!-- à faire / écarts à corriger / validé -->
 **Captures temporaires ou rapport :**
 
