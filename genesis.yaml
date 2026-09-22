@@ -1,0 +1,13 @@
+version: 2
+profile: product
+
+# Genesis core is vendor-neutral.
+# Adapters describe optional tools and can be replaced without changing the core.
+adapters:
+  orchestration: optional
+  coding: optional
+  design_workshop: optional
+
+# Raise to "sensitive" when the product handles health, financial,
+# highly sensitive personal data, or comparable high-impact risks.
+# Lower to "experiment" for disposable validation work.

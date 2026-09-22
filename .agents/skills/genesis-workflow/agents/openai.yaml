@@ -1,4 +1,0 @@
-interface:
-  display_name: "Genesis Workflow"
-  short_description: "Router init, stories, quality, sync et release"
-  default_prompt: "Applique le workflow Genesis canonique à cette tâche sans dupliquer les checklists."
