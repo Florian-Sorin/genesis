@@ -1,128 +1,65 @@
-# Système de design — [NOM DU PROJET]
+# Experience & design contract
 
-<!-- Dernière mise à jour : YYYY-MM-DD -->
-<!-- Lire BRIEF.md et FUNCTIONAL.md avant ce fichier. -->
-<!-- Source de vérité visuelle globale. Les règles métier restent dans FUNCTIONAL.md. -->
-<!-- La direction est décidée dans design/visual-direction.md AVANT sa traduction en système. -->
+> Tool-agnostic. This file owns durable experience decisions; a design workshop owns exploration, not truth.
 
----
+## Experience thesis
 
-## 1. Principes UX
+[One or two sentences describing what the experience should make easy and how it should feel.]
 
-<!-- 3 à 5 principes actionnables qui permettent d'arbitrer un choix d'interface. -->
+## Primary flow priorities
 
--
--
--
+1. [Most important action]
+2. [Second]
+3. [Third]
 
-## 2. Plateformes et contexte d'usage
+## Interaction principles
 
-**Plateforme(s) cible(s) :** <!-- Web, iOS, Android, desktop... -->
-**Conventions natives :** <!-- Human Interface Guidelines, Material Design... -->
-**Contexte d'usage :** <!-- mobilité, faible connexion, usage prolongé... -->
-**Navigation globale :** <!-- tabs, sidebar, stack... -->
-**Priorité adaptative :** <!-- mobile-first, desktop-first, adaptive -->
-**Viewports / appareils de référence :**
+- [Principle tied to the product]
+- [Principle]
 
-## 3. Direction visuelle
+## Visual direction
 
-**Design brief :** [`design/design-brief.md`](design/design-brief.md)
-**Direction canonique :** [`design/visual-direction.md`](design/visual-direction.md)
-**Ambition :** <!-- PRODUCT / AWARD -->
-**Visual thesis :**
-**Style général :**
-**Références :**
-**Anti-références :**
-**Densité :**
-**Mode sombre :** <!-- oui / non / plus tard -->
-**Voix du contenu :**
+- personality:
+- typography intent:
+- colour intent:
+- layout / density:
+- imagery:
+- motion:
+- responsive strategy:
 
-Les tokens et composants découlent de la direction approuvée. Appliquer **Composition before Components** : une primitive UI sert la composition ; elle ne la remplace pas.
+## Anti-goals
 
-## 4. Accessibilité
+Make them testable.
 
-**Niveau cible :** <!-- ex. WCAG 2.2 AA -->
-**Contraste :**
-**Navigation clavier / focus :**
-**Lecteurs d'écran / labels :**
-**Taille tactile minimale :**
-**Motion réduite :**
-**Contraintes complémentaires :**
+- Do not [generic or unwanted visual pattern].
+- Do not sacrifice [clarity/accessibility/performance] for [effect].
 
-## 5. Tokens
+## Accessibility baseline
 
-<!-- Séparer primitives et usages sémantiques. Ne pas référencer une primitive directement dans un écran. -->
+- keyboard / focus:
+- contrast:
+- reduced motion:
+- target sizes / touch:
+- semantic structure:
+- content resizing / responsive behaviour:
 
-### 5.1 Couleurs
+## Design system
 
-| Token sémantique | Primitive | Usage |
-|---|---|---|
-| `color.action.primary` |  |  |
-| `color.surface.default` |  |  |
-| `color.text.default` |  |  |
+Record only stable tokens/components once they exist. Do not invent a design system before the product needs it.
 
-### 5.2 Typographie
+## Workshop contract
 
-| Token | Police / graisse / taille / ligne | Usage |
-|---|---|---|
-| `type.heading.large` |  |  |
-| `type.body.default` |  |  |
-| `type.label.default` |  |  |
+Any design tool may be used.
 
-### 5.3 Espacements, dimensions et forme
+Input:
+- relevant PRODUCT rules;
+- this DESIGN contract;
+- the active outcome in WORK.
 
-**Échelle d'espacement :**
-**Rayons :**
-**Élévations / ombres :**
-**Grille :**
-**Containers :**
-**Bordures / séparateurs :**
-**Icônes :**
-**Motion :**
-**Feedback :**
-**Règles responsive :**
+Output worth preserving in Git:
+- approved direction or reference;
+- important interaction/state decisions;
+- implementation constraints;
+- assets that production actually needs.
 
-## 6. Catalogue des composants
-
-<!-- Un identifiant stable par composant. Tout nouveau pattern doit être ajouté ici. -->
-
-### C01 — [Nom du composant]
-
-**Statut :** <!-- draft / approved / implemented / deprecated -->
-**Anatomie :**
-**Variantes et tailles :**
-**États :** <!-- default, hover, focus, disabled, loading, error... -->
-**Comportement :**
-**Accessibilité :**
-**Présent sur :** <!-- IDs d'écran -->
-**Implémentation :** <!-- chemin quand disponible -->
-
-## 7. Assets et contenu
-
-**Format des icônes :**
-**Format des images :**
-**Règles de nommage :**
-**Contenu représentatif :** <!-- vraies longueurs, cas extrêmes, localisation -->
-
-## 8. Interopérabilité des ateliers
-
-**Atelier courant :** <!-- Open Design / Codex / autre / aucun -->
-**Projet / espace (optionnel) :**
-**Système synchronisé le :**
-**Version / identifiant :**
-**Limites ou fallback cloud :**
-
-`DESIGN.md` et les handoffs Git sont canoniques. L’atelier n’est qu’un éditeur ou un générateur interchangeable : aucune décision nécessaire à l’implémentation ne doit vivre uniquement dans son format propriétaire.
-
-## 9. Validation visuelle
-
-**Viewports de recette :** <!-- ex : 390×844, 768×1024 si pertinent, 1440×900 -->
-**Routes critiques :**
-**Données de recette :**
-**Tolérances / écarts acceptés :**
-
-Appliquer la boucle légère décrite dans [`VISUAL-QA.md`](VISUAL-QA.md). Les références approuvées vivent avec chaque handoff ; les captures d’exécution restent temporaires sauf choix explicite de baselines versionnées.
-
-## 10. Changelog
-
-- YYYY-MM-DD — [décision ou évolution visuelle]
+No implementation-critical decision may live only inside an external design tool.

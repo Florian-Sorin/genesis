@@ -1,258 +1,159 @@
-# Genesis
+# Genesis v2
 
-> Socle de démarrage pour concevoir, développer, valider et mettre en production un produit assisté par IA sans perdre le contrôle des décisions.
+> A lightweight continuity layer between human intent and interchangeable AI agents.
 
-**Version :** `v1.0.0-rc`
-**Compatible avec :** Codex/ChatGPT Cloud, Open Design, Claude Code, Cursor et tout agent capable de lire `AGENTS.md` et les skills de dépôt.
+Genesis does not teach capable models how to think. It preserves the decisions, constraints, outcomes and evidence that must survive when tools, models or sessions change.
 
-## Pourquoi
+This branch is an experimental rewrite of Genesis. The previous generation is preserved at tag `1.0`.
 
-Genesis garde la source de vérité dans le repo : produit, architecture, sécurité, UX/UI, stories, qualité, exploitation et release sont versionnés avec le code.
+## What Genesis is
 
-Le principe est simple : **l'agent aide à produire, mais les contrats du projet décident**. Les commandes et skills routent vers ces contrats sans dupliquer leurs checklists.
+Genesis is a small set of **contracts**:
 
-## Chaîne complète
+- what the project is trying to achieve;
+- what product behaviour must remain true;
+- which technical and risk constraints matter;
+- what the experience should feel like;
+- what the current unit of work must accomplish;
+- what evidence is required before shipping.
 
-```text
-Idée
-  ↓
-BRIEF
-  ↓
-FUNCTIONAL + ARCHITECTURE + SECURITY
-  ↓
-UX + Design Intelligence
-  ↓
-Design/handoffs par module
-  ↓
-Stories + Definition of Ready
-  ↓
-Implémentation
-  ↓
-Definition of Done + Quality Gate + Visual QA
-  ↓
-Production readiness
-  ↓
-Release + smoke tests + vérification production
-```
+Everything else is replaceable.
 
-## Démarrer un projet
+## What Genesis is not
 
-1. Utiliser Genesis comme base d'un nouveau repo.
-2. Ouvrir le repo dans l'agent local ou cloud de ton choix.
-3. Donner un pitch libre du produit.
-4. Lancer `/init` ou demander à l'agent de suivre `docs/KICKOFF.md`.
-5. Valider chaque gate avant de passer à la phase suivante.
+Genesis is not:
 
-### Workflow d'initialisation
+- a mandatory waterfall;
+- a project manager;
+- a prompt collection for one model;
+- a dependency on OpenAI, Anthropic, Open Design or any other vendor;
+- a reason to create documentation that nobody needs;
+- a substitute for tests, code review or human product judgment.
 
-`docs/KICKOFF.md` est la source canonique :
-
-- **Phase 1 — Pitch** → `BRIEF.md`
-- **Phase 2 — Produit / technique / sécurité** → `FUNCTIONAL.md`, `ARCHITECTURE.md`, `SECURITY.md`
-- **Phase 3 — UX + Design Intelligence** → design brief, direction visuelle, `DESIGN.md`
-- **Phase 4 — Module par module** → design/handoff suffisamment mûr → stories → Gate module
-
-Le Gate module final contrôle les stories ; il n'est jamais un prérequis à leur création.
-
-## Workflow quotidien
+## Core loop
 
 ```text
-/story  → charge la story et son contexte
-/ready  → exécute la Definition of Ready de AGENTS.md
-[code]
-/done   → exécute Definition of Done + QUALITY + Visual QA si UI
+VALIDATE → FRAME → DECIDE → DESIGN → BUILD → VERIFY → SHIP → LEARN
 ```
 
-Une story `[done]` n'est pas encore une release. La mise en production passe ensuite par :
+This is a loop, not a fixed sequence. A task enters only the parts it needs.
 
-```text
-/sync-doc
-/release
-```
+Genesis uses **decision gates**, not phase gates. Human approval is required only when a decision is costly, risky, hard to reverse or genuinely subjective.
 
-`/release` exécute `docs/RELEASE.md`, le Quality Gate release, les checks d'exploitation et les smoke tests.
+## Rigor profiles
 
-## Contrats canoniques
+The project selects one profile in `genesis.yaml`.
 
-| Fichier | Rôle |
+| Profile | Use |
 |---|---|
-| `AGENTS.md` | règles de travail, Definition of Ready/Done, routage |
-| `docs/BRIEF.md` | problème, cible, positionnement, succès |
-| `docs/FUNCTIONAL.md` | comportement produit et modules |
-| `docs/ARCHITECTURE.md` | stack, commandes, données, Git, déploiement |
-| `docs/SECURITY.md` | auth, autorisation, données sensibles, incidents |
-| `docs/QUALITY.md` | quality gates story et release |
-| `docs/DESIGN.md` | système visuel |
-| `docs/WIREFRAMES.md` | inventaire et contrat des écrans |
-| `docs/VISUAL-QA.md` | validation visuelle du rendu réel |
-| `docs/OPERATIONS.md` | observabilité, restauration, analytics, performance, coûts |
-| `docs/RELEASE.md` | procédure de mise en production |
-| `docs/STORIES.md` | index du backlog |
-| `docs/JOURNAL.md` | apprentissages durables |
+| `experiment` | Fast validation, prototypes, disposable tests |
+| `product` | Normal side project / SaaS / application |
+| `sensitive` | Health, finance, sensitive personal data, higher operational or regulatory risk |
 
-## Design Intelligence
-
-Genesis sépare UX, direction artistique et exécution visuelle.
-
-### Skills design
-
-- `genesis-art-direction` — visual thesis, références, anti-goals, PRODUCT/AWARD.
-- `genesis-design` — brief module, exploration, handoff et implémentation.
-- `genesis-design-critic` — critique mesurable, responsive, accessibilité et détection d'AI slop.
-- `genesis-motion-design` — motion intentionnelle et reduced motion.
-
-Principes :
-
-- **Composition before Components**.
-- Un atelier externe est interchangeable ; les handoffs Git restent canoniques.
-- Open Design est l'atelier principal lorsqu'il est disponible, jamais un point de blocage.
-- PRODUCT par défaut pour les interfaces productives ; AWARD uniquement lorsque la marque/narration le justifie.
-- Visual QA sur le rendu réel avant de déclarer un écran `implemented`.
-
-## Workflow portable pour agents
-
-`.agents/skills/genesis-workflow/` route le cycle général :
-
-- init ;
-- story / ready / done ;
-- sync documentaire ;
-- quality gates ;
-- release.
-
-Les commandes `.claude/commands/` sont des adaptateurs pour Claude Code. Elles ne sont pas les sources de vérité des checklists.
-
-## Qualité
-
-`docs/QUALITY.md` rend explicites les commandes applicables à la stack :
-
-- lint / format check ;
-- typecheck ou analyse statique ;
-- tests unitaires ;
-- E2E / intégration ;
-- build production ;
-- audit dépendances si pertinent.
-
-Genesis n'impose pas un outil particulier ni un pourcentage de couverture arbitraire.
-
-## Sécurité
-
-Genesis impose un **résultat de sécurité**, pas Supabase ou PostgreSQL :
-
-- toute ressource privée possède un contrôle d'autorisation explicite ;
-- RLS est utilisée lorsqu'elle fait partie de la stack ; sinon un contrôle serveur/provider équivalent est attendu ;
-- secrets jamais dans le repo, les logs ou les captures ;
-- opérations sensibles documentées et testées.
-
-## Production readiness
-
-Avant un lancement public, `docs/OPERATIONS.md` force une décision consciente sur :
-
-- error tracking / diagnostic ;
-- logs ;
-- health/uptime si nécessaire ;
-- backup et restauration des données non reproductibles ;
-- analytics reliées à un objectif produit ;
-- performance des parcours critiques ;
-- coûts variables et quotas.
-
-L'objectif n'est pas de transformer un side project en plateforme SRE, mais d'éviter un produit impossible à diagnostiquer ou restaurer.
-
-## Release
-
-`docs/RELEASE.md` couvre :
-
-1. Quality Gate complet.
-2. Synchronisation documentaire.
-3. Variables et secrets.
-4. Migrations et stratégie rollback/roll-forward.
-5. Déploiement avec la procédure documentée.
-6. Smoke tests.
-7. Vérification des erreurs/signaux production.
-8. Tag et clôture seulement si tout est vert.
+A higher profile activates more explicit contracts. It does not justify bureaucracy.
 
 ## Structure
 
 ```text
 /
 ├── AGENTS.md
-├── CLAUDE.md
-├── .agents/skills/
-│   ├── genesis-workflow/
-│   ├── genesis-design/
-│   ├── genesis-art-direction/
-│   ├── genesis-design-critic/
-│   └── genesis-motion-design/
-├── .claude/commands/
-│   ├── init.md
-│   ├── design.md
-│   ├── story.md
-│   ├── ready.md
-│   ├── done.md
-│   ├── new-story.md
-│   ├── sync-doc.md
-│   ├── journal.md
-│   └── release.md
+├── genesis.yaml
 ├── docs/
-│   ├── BRIEF.md
-│   ├── FUNCTIONAL.md
-│   ├── ARCHITECTURE.md
-│   ├── SECURITY.md
-│   ├── QUALITY.md
+│   ├── PROJECT.md
+│   ├── PRODUCT.md
+│   ├── TECH.md
+│   ├── RISK.md
 │   ├── DESIGN.md
-│   ├── WIREFRAMES.md
-│   ├── VISUAL-QA.md
-│   ├── OPERATIONS.md
-│   ├── RELEASE.md
-│   ├── KICKOFF.md
-│   ├── STORIES.md
-│   ├── JOURNAL.md
-│   ├── design/
-│   └── stories/
-└── scripts/
+│   ├── WORK.md
+│   ├── SHIP.md
+│   ├── DECISIONS.md
+│   └── adapters/
+│       ├── README.md
+│       ├── work.md
+│       ├── codex.md
+│       └── open-design.md
+└── .agents/
+    └── skills/
+        └── genesis/
+            └── SKILL.md
 ```
 
-## Scripts
+## Sources of truth
 
-Node.js ≥ 18 :
+- **Code** is the source of truth for implementation details.
+- **PROJECT.md** is the source of truth for intent and success.
+- **PRODUCT.md** is the source of truth for important product behaviour.
+- **TECH.md** is the source of truth for technical boundaries and operating commands.
+- **RISK.md** is the source of truth for security, privacy and high-impact constraints.
+- **DESIGN.md** is the source of truth for durable experience and visual decisions.
+- **WORK.md** describes only the current coherent unit of work.
+- **SHIP.md** defines what must be true to release.
+- **DECISIONS.md** records durable decisions that would otherwise be rediscovered.
 
-```bash
-node scripts/new-story.mjs
-node scripts/archive-stories.mjs --dry-run
-node scripts/archive-mockups.mjs --dry-run
-```
+Do not duplicate a rule into several files.
 
-## Principes de stabilité
+## Progressive disclosure
 
-- Une seule source de vérité par décision.
-- Les commandes et skills exécutent les contrats ; ils ne les recopient pas.
-- Une story à la fois.
-- Une technologie n'entre pas dans le projet sans être documentée.
-- Les outils de design restent remplaçables.
-- La qualité et la production sont des étapes du workflow, pas des tâches repoussées à la fin.
-- Une évolution de Genesis doit répondre à un problème réellement rencontré sur un projet, pas à une sophistication théorique.
+An agent starts with `AGENTS.md`, `genesis.yaml` and the active outcome in `WORK.md`.
 
-## Changelog
+It reads another contract only when the task can affect that contract.
 
-### v1.0.0-rc — 2026-08-18
+Examples:
 
-- Corrige le cycle Design → Stories → Gate module.
-- Centralise Definition of Ready/Done et supprime les checklists concurrentes des commandes.
-- Ajoute `QUALITY.md` et les quality gates story/release.
-- Ajoute `OPERATIONS.md`, `RELEASE.md` et `/release`.
-- Rend les règles d'autorisation portables au-delà de Supabase/RLS.
-- Corrige la procédure de violation de données RGPD.
-- Ajoute le skill portable `genesis-workflow` pour Codex/ChatGPT et agents compatibles.
-- Met à jour l'architecture pour déclarer commandes de qualité, déploiement et production readiness.
+- copy change → probably PRODUCT only;
+- database migration → TECH + RISK;
+- UI implementation → PRODUCT + DESIGN + TECH;
+- public release → SHIP + relevant risk and technical contracts.
 
-### v0.6.0 — 2026-08-18
+## Decision gates
 
-- Workflow design agnostique et Visual QA.
-- Skill `genesis-design` portable.
+Stop for explicit human approval when changing one of these:
 
-### v0.5.0 — 2026-08-13
+1. Project outcome, target user or MVP boundary.
+2. An architecture choice that creates meaningful lock-in or migration cost.
+3. Sensitive-data handling, authorization, destructive behaviour or material security posture.
+4. A primary product flow or major visual direction.
+5. A public release, irreversible migration, destructive production action or material spend.
 
-- Design handoffs, `DESIGN.md` et commande `/design`.
+Within already-approved contracts, capable agents should continue autonomously and show evidence at the end.
 
-### v0.4.0 — 2026-05-25
+## Work units
 
-- Workflow `KICKOFF.md` et commande `/init`.
+Genesis v2 does not require arbitrary stories sized in hours.
+
+A work unit is a **coherent, reviewable vertical outcome**. It may map to an issue, PR, story, task or agent session.
+
+Every active work unit states:
+
+- outcome;
+- scope and non-goals;
+- affected contracts;
+- evidence required;
+- decision gates, if any.
+
+## Adapters
+
+Tools are integrations, not architecture.
+
+The repository currently includes example adapters for:
+
+- ChatGPT Work;
+- Codex;
+- Open Design.
+
+They may be replaced or ignored. An adapter cannot weaken or silently add a Genesis core rule.
+
+## When to update Genesis
+
+Do not expand the framework because a new model exists.
+
+Change Genesis only when a real project reveals one of these:
+
+- lost context caused a wrong decision;
+- a required gate was missing;
+- a contract was ambiguous;
+- duplicated documentation drifted;
+- an agent repeatedly loaded unnecessary context;
+- an adapter leaked tool-specific assumptions into the core.
+
+The test of Genesis v2 should be simple: **does it help a strong agent build Clairon with less friction and fewer wrong turns than using the repository alone?**
